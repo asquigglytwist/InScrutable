@@ -9,6 +9,7 @@
     <Import_RootNamespace>InScrutable</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="..\InScrutable\Argot.cs" />
   </ItemGroup>
 </Project>
