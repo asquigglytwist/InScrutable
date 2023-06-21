@@ -4,8 +4,10 @@ namespace InScrutable.Test
     public class ArgotTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void ScramblerTest()
         {
+            var plainString = "asdfgf";
+            Assert.AreEqual(plainString, Argot.Scramble(plainString));
         }
     }
 }
