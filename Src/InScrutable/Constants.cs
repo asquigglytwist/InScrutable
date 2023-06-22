@@ -14,5 +14,10 @@ namespace InScrutable.Global
             var alphabetInUpperCase = char.ToUpper(alphabet, System.Globalization.CultureInfo.InvariantCulture);
             return KnownVowels.Any(vowel => vowel == alphabetInUpperCase);
         }
+
+        internal static bool IsNotVowelOrY(this char alphabet)
+        {
+            return !alphabet.IsVowelOrY();
+        }
     }
 }
