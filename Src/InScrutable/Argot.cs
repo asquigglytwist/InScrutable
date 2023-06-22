@@ -1,5 +1,7 @@
-﻿using System;
+﻿using InScrutable.Global;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace InScrutable
@@ -51,7 +53,79 @@ namespace InScrutable
     {
         internal static string Scramble(string plainString)
         {
-            return string.Empty;
+            ScramblerState scramblerState = ScramblerState.Append;
+            StringBuilder sb = new(plainString.Length);
+            ClusterMarker previousVowelCluster = new();
+            ClusterMarker currentVowelCluster = new();
+
+            int ixVowelClusterStart = 0;
+            for (int iiCurrentIndex = 0; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
+            {
+                var chCurrentChar = plainString[iiCurrentIndex];
+                var bIsCharAVowelOrY = chCurrentChar.IsVowelOrY();
+                if (!bIsCharAVowelOrY)
+                {
+                    switch (scramblerState)
+                    {
+                        case ScramblerState.Append:
+                            sb.Append(chCurrentChar);
+                            break;
+                        case ScramblerState.FirstClusterStart:
+                            scramblerState = ScramblerState.FirstClusterEnd;
+                            previousVowelCluster.Assign(ixVowelClusterStart, iiCurrentIndex - 1);
+                            break;
+                        case ScramblerState.SecondClusterStart:
+                            // scramblerState = ScramblerState.SecondClusterEnd;
+                            currentVowelCluster.Assign(ixVowelClusterStart, iiCurrentIndex - 1);
+                            // TODO:  Complete all append ops
+                            for (int jj = currentVowelCluster.ClusterStartIndex; jj <= currentVowelCluster.ClusterEndIndex; jj++)
+                            {
+                                sb.Append(plainString[jj]);
+                            }
+                            for (int jj = previousVowelCluster.ClusterEndIndex + 1; jj < currentVowelCluster.ClusterStartIndex; jj++)
+                            {
+                                sb.Append(plainString[jj]);
+                            }
+                            for (int jj = previousVowelCluster.ClusterStartIndex; jj <= previousVowelCluster.ClusterEndIndex; jj++)
+                            {
+                                sb.Append(plainString[jj]);
+                            }
+                            previousVowelCluster.ResetToInitState();
+                            scramblerState = ScramblerState.Append;
+                            break;
+                        case ScramblerState.FirstClusterEnd:
+                        case ScramblerState.SecondClusterEnd:
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (scramblerState)
+                    {
+                        case ScramblerState.Append:
+                            scramblerState = ScramblerState.FirstClusterStart;
+                            ixVowelClusterStart = iiCurrentIndex;
+                            break;
+                        case ScramblerState.FirstClusterEnd:
+                            scramblerState = ScramblerState.SecondClusterStart;
+                            ixVowelClusterStart = iiCurrentIndex;
+                            break;
+                        case ScramblerState.FirstClusterStart:
+                        case ScramblerState.SecondClusterStart:
+                        default:
+                            break;
+                    }
+                }
+                if (previousVowelCluster.IsInitialized)
+                {
+                    for (iiCurrentIndex = previousVowelCluster.ClusterStartIndex; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
+                    {
+                        sb.Append(plainString[iiCurrentIndex]);
+                    }
+                }
+            }
+            return sb.ToString();
         }
     }
 }
