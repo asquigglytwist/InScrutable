@@ -37,6 +37,16 @@ namespace InScrutable
             IsInitialized = true;
         }
     }
+
+    internal enum ScramblerState
+    {
+        Append,
+        FirstClusterStart,
+        FirstClusterEnd,
+        SecondClusterStart,
+        SecondClusterEnd
+    }
+
     internal static class Argot
     {
         internal static string Scramble(string plainString)
