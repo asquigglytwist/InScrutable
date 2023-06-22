@@ -51,7 +51,7 @@ namespace InScrutable
 
     internal static class Argot
     {
-        internal static string Scramble(string plainString)
+        internal static string PhoneticSwap(string plainString)
         {
             ScramblerState scramblerState = ScramblerState.Append;
             StringBuilder sb = new(plainString.Length);
