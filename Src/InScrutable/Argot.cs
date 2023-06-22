@@ -53,7 +53,7 @@ namespace InScrutable
     {
         public delegate bool CheckCharInterest(char charOfInterest);
 
-        internal static string PhoneticSwap(string plainString, bool swapVowels = true)
+        internal static string PhoneticSwap(string plainString, in bool swapVowels = true)
         {
             CheckCharInterest charInterestChecker = swapVowels ? Constants.IsVowelOrY : Constants.IsNotVowelOrY;
             ScramblerState scramblerState = ScramblerState.Append;
