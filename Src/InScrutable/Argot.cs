@@ -67,7 +67,7 @@ namespace InScrutable
             {
                 var chCurrentChar = plainString[iiCurrentIndex];
                 var bIsCharAVowelOrY = charInterestChecker(chCurrentChar);
-                Debug.WriteLine("Char {0} is {1}a Vowel", chCurrentChar, bIsCharAVowelOrY ? "" : "not ");
+                Debug.WriteLine($"Char {chCurrentChar} is {0}a Vowel", bIsCharAVowelOrY ? "" : "not ");
                 if (!bIsCharAVowelOrY)
                 {
                     switch (scramblerState)
@@ -90,14 +90,17 @@ namespace InScrutable
                             {
                                 sb.Append(plainString[jj]);
                             }
+                            Debug.WriteLine($"After appending 2nd cluster:  {sb}");
                             for (int jj = previousVowelCluster.ClusterEndIndex + 1; jj < currentVowelCluster.ClusterStartIndex; jj++)
                             {
                                 sb.Append(plainString[jj]);
                             }
+                            Debug.WriteLine($"After appending interim cluster:  {sb}");
                             for (int jj = previousVowelCluster.ClusterStartIndex; jj <= previousVowelCluster.ClusterEndIndex; jj++)
                             {
                                 sb.Append(plainString[jj]);
                             }
+                            Debug.WriteLine($"After appending first cluster:  {sb}");
                             previousVowelCluster.ResetToInitState();
                             scramblerState = ScramblerState.Append;
                             break;
@@ -114,10 +117,12 @@ namespace InScrutable
                         case ScramblerState.Append:
                             scramblerState = ScramblerState.FirstClusterStart;
                             ixVowelClusterStart = iiCurrentIndex;
+                            Debug.WriteLine($"Detected (First) char of interst {chCurrentChar} at {ixVowelClusterStart}");
                             break;
                         case ScramblerState.FirstClusterEnd:
                             scramblerState = ScramblerState.SecondClusterStart;
                             ixVowelClusterStart = iiCurrentIndex;
+                            Debug.WriteLine($"Detected (Second) char of interst {chCurrentChar} at {ixVowelClusterStart}");
                             break;
                         case ScramblerState.FirstClusterStart:
                         case ScramblerState.SecondClusterStart:
@@ -132,7 +137,9 @@ namespace InScrutable
                     {
                         sb.Append(plainString[iiCurrentIndex]);
                     }
+                    Debug.WriteLine($"After final append:  {sb}");
                 }
+                Debug.Assert(plainString.Length == iiCurrentIndex);
             }
             return sb.ToString();
         }
