@@ -51,8 +51,11 @@ namespace InScrutable
 
     internal static class Argot
     {
-        internal static string PhoneticSwap(string plainString)
+        public delegate bool CheckCharInterest(char charOfInterest);
+
+        internal static string PhoneticSwap(string plainString, bool swapVowels = true)
         {
+            CheckCharInterest charInterestChecker = swapVowels ? Constants.IsVowelOrY : Constants.IsNotVowelOrY;
             ScramblerState scramblerState = ScramblerState.Append;
             StringBuilder sb = new(plainString.Length);
             ClusterMarker previousVowelCluster = new();
@@ -62,7 +65,7 @@ namespace InScrutable
             for (int iiCurrentIndex = 0; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
             {
                 var chCurrentChar = plainString[iiCurrentIndex];
-                var bIsCharAVowelOrY = chCurrentChar.IsVowelOrY();
+                var bIsCharAVowelOrY = charInterestChecker(chCurrentChar);
                 Debug.WriteLine("Char {0} is {1}a Vowel", chCurrentChar, bIsCharAVowelOrY ? "" : "not ");
                 if (!bIsCharAVowelOrY)
                 {
