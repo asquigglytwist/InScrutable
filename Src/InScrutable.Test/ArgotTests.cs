@@ -6,7 +6,7 @@ namespace InScrutable.Test
         [TestMethod]
         public void ScramblerTest()
         {
-            var plainString = "asdfgf";
+            var plainString = "Abecdfiogh";
             Assert.AreEqual(plainString, Argot.Scramble(plainString));
         }
     }
