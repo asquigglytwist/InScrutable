@@ -63,12 +63,16 @@ namespace InScrutable
             {
                 var chCurrentChar = plainString[iiCurrentIndex];
                 var bIsCharAVowelOrY = chCurrentChar.IsVowelOrY();
+                Debug.WriteLine("Char {0} is {1}a Vowel", chCurrentChar, bIsCharAVowelOrY ? "" : "not ");
                 if (!bIsCharAVowelOrY)
                 {
                     switch (scramblerState)
                     {
                         case ScramblerState.Append:
                             sb.Append(chCurrentChar);
+#if DEBUG
+                            Debug.WriteLine("After append:  {0}", sb.ToString());
+#endif
                             break;
                         case ScramblerState.FirstClusterStart:
                             scramblerState = ScramblerState.FirstClusterEnd;
