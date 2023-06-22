@@ -55,6 +55,7 @@ namespace InScrutable
 
         internal static string PhoneticSwap(string plainString, in bool swapVowels = true)
         {
+            Debug.WriteLine($"SwapVowels = {swapVowels}\tInput:\n{plainString}");
             CheckCharInterest charInterestChecker = swapVowels ? Constants.IsVowelOrY : Constants.IsNotVowelOrY;
             ScramblerState scramblerState = ScramblerState.Append;
             StringBuilder sb = new(plainString.Length);
@@ -73,18 +74,18 @@ namespace InScrutable
                     {
                         case ScramblerState.Append:
                             sb.Append(chCurrentChar);
-#if DEBUG
-                            Debug.WriteLine("After append:  {0}", sb.ToString());
-#endif
+                            Debug.WriteLine("Appending char:  {0}", chCurrentChar);
                             break;
                         case ScramblerState.FirstClusterStart:
                             scramblerState = ScramblerState.FirstClusterEnd;
                             previousVowelCluster.Assign(ixVowelClusterStart, iiCurrentIndex - 1);
+                            Debug.WriteLine("(First) Cluster marked:  {0}-{1}",
+                                previousVowelCluster.ClusterStartIndex, previousVowelCluster.ClusterEndIndex);
                             break;
                         case ScramblerState.SecondClusterStart:
-                            // scramblerState = ScramblerState.SecondClusterEnd;
                             currentVowelCluster.Assign(ixVowelClusterStart, iiCurrentIndex - 1);
-                            // TODO:  Complete all append ops
+                            Debug.WriteLine("(Second) Cluster marked:  {0}-{1}",
+                                currentVowelCluster.ClusterStartIndex, currentVowelCluster.ClusterEndIndex);
                             for (int jj = currentVowelCluster.ClusterStartIndex; jj <= currentVowelCluster.ClusterEndIndex; jj++)
                             {
                                 sb.Append(plainString[jj]);
@@ -126,6 +127,7 @@ namespace InScrutable
                 }
                 if (previousVowelCluster.IsInitialized)
                 {
+                    Debug.WriteLine("Residues detected; Appending for completeness");
                     for (iiCurrentIndex = previousVowelCluster.ClusterStartIndex; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
                     {
                         sb.Append(plainString[iiCurrentIndex]);
