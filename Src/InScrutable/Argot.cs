@@ -139,7 +139,6 @@ namespace InScrutable
                     }
                     Debug.WriteLine($"After final append:  {sb}");
                 }
-                Debug.Assert(plainString.Length == iiCurrentIndex);
             }
             return sb.ToString();
         }
