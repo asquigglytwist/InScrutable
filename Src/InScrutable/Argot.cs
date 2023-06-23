@@ -100,6 +100,7 @@ namespace InScrutable
                             {
                                 sb.Append(plainString[jj]);
                             }
+                            sb.Append(chCurrentChar);
                             Debug.WriteLine($"After appending first cluster:  {sb}");
                             previousVowelCluster.ResetToInitState();
                             scramblerState = ScramblerState.Append;
@@ -130,15 +131,17 @@ namespace InScrutable
                             break;
                     }
                 }
-                if (previousVowelCluster.IsInitialized)
+            }
+            int residuesStartIndex = (previousVowelCluster.IsInitialized ? previousVowelCluster.ClusterStartIndex :
+                (scramblerState != ScramblerState.Append ? ixVowelClusterStart : - 1));
+            if (residuesStartIndex > -1)
+            {
+                Debug.WriteLine("Residues detected; Appending for completeness");
+                for (int iiCurrentIndex = residuesStartIndex; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
                 {
-                    Debug.WriteLine("Residues detected; Appending for completeness");
-                    for (iiCurrentIndex = previousVowelCluster.ClusterStartIndex; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
-                    {
-                        sb.Append(plainString[iiCurrentIndex]);
-                    }
-                    Debug.WriteLine($"After final append:  {sb}");
+                    sb.Append(plainString[iiCurrentIndex]);
                 }
+                Debug.WriteLine($"After final append:  {sb}");
             }
             return sb.ToString();
         }
