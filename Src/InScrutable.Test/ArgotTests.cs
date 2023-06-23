@@ -15,7 +15,9 @@ namespace InScrutable.Test
                 ("Y", "Y"),
                 ("y", "y"),
                 ("Aa", "Aa"),
-                ("Yy", "Yy")
+                ("Yy", "Yy"),
+                ("BbC", "BbC"),
+                ("CaT", "CaT")
             };
             (string inputPlain, string outputScrambled)[] testCombos_RemainUnchanged_Long = new[] {
                 ("AEIOUYaeiouy", "AEIOUYaeiouy"),
