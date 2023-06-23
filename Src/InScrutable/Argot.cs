@@ -59,16 +59,16 @@ namespace InScrutable
             CheckCharInterest charInterestChecker = swapVowels ? Constants.IsVowelOrY : Constants.IsNotVowelOrY;
             ScramblerState scramblerState = ScramblerState.Append;
             StringBuilder sb = new(plainString.Length);
-            ClusterMarker previousVowelCluster = new();
-            ClusterMarker currentVowelCluster = new();
+            ClusterMarker previousClusterOfInterest = new();
+            ClusterMarker currentClusterOfInterest = new();
 
-            int ixVowelClusterStart = 0;
+            int ixClusterOfInterestStart = 0;
             for (int iiCurrentIndex = 0; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
             {
                 var chCurrentChar = plainString[iiCurrentIndex];
-                var bIsCharAVowelOrY = charInterestChecker(chCurrentChar);
-                Debug.WriteLine($"Char {chCurrentChar} is {(bIsCharAVowelOrY ? string.Empty : "not ")}a Vowel");
-                if (!bIsCharAVowelOrY)
+                var bIsCharOfInterest = charInterestChecker(chCurrentChar);
+                Debug.WriteLine($"Char {chCurrentChar} does {(bIsCharOfInterest ? string.Empty : "not ")}match criteria / interest check");
+                if (!bIsCharOfInterest)
                 {
                     switch (scramblerState)
                     {
@@ -78,31 +78,31 @@ namespace InScrutable
                             break;
                         case ScramblerState.FirstClusterStart:
                             scramblerState = ScramblerState.FirstClusterEnd;
-                            previousVowelCluster.Assign(ixVowelClusterStart, iiCurrentIndex - 1);
+                            previousClusterOfInterest.Assign(ixClusterOfInterestStart, iiCurrentIndex - 1);
                             Debug.WriteLine("(First) Cluster marked:  {0}-{1}",
-                                previousVowelCluster.ClusterStartIndex, previousVowelCluster.ClusterEndIndex);
+                                previousClusterOfInterest.ClusterStartIndex, previousClusterOfInterest.ClusterEndIndex);
                             break;
                         case ScramblerState.SecondClusterStart:
-                            currentVowelCluster.Assign(ixVowelClusterStart, iiCurrentIndex - 1);
+                            currentClusterOfInterest.Assign(ixClusterOfInterestStart, iiCurrentIndex - 1);
                             Debug.WriteLine("(Second) Cluster marked:  {0}-{1}",
-                                currentVowelCluster.ClusterStartIndex, currentVowelCluster.ClusterEndIndex);
-                            for (int jj = currentVowelCluster.ClusterStartIndex; jj <= currentVowelCluster.ClusterEndIndex; jj++)
+                                currentClusterOfInterest.ClusterStartIndex, currentClusterOfInterest.ClusterEndIndex);
+                            for (int jj = currentClusterOfInterest.ClusterStartIndex; jj <= currentClusterOfInterest.ClusterEndIndex; jj++)
                             {
                                 sb.Append(plainString[jj]);
                             }
                             Debug.WriteLine($"After appending 2nd cluster:  {sb}");
-                            for (int jj = previousVowelCluster.ClusterEndIndex + 1; jj < currentVowelCluster.ClusterStartIndex; jj++)
+                            for (int jj = previousClusterOfInterest.ClusterEndIndex + 1; jj < currentClusterOfInterest.ClusterStartIndex; jj++)
                             {
                                 sb.Append(plainString[jj]);
                             }
                             Debug.WriteLine($"After appending interim cluster:  {sb}");
-                            for (int jj = previousVowelCluster.ClusterStartIndex; jj <= previousVowelCluster.ClusterEndIndex; jj++)
+                            for (int jj = previousClusterOfInterest.ClusterStartIndex; jj <= previousClusterOfInterest.ClusterEndIndex; jj++)
                             {
                                 sb.Append(plainString[jj]);
                             }
                             sb.Append(chCurrentChar);
                             Debug.WriteLine($"After appending first cluster:  {sb}");
-                            previousVowelCluster.ResetToInitState();
+                            previousClusterOfInterest.ResetToInitState();
                             scramblerState = ScramblerState.Append;
                             break;
                         case ScramblerState.FirstClusterEnd:
@@ -117,13 +117,13 @@ namespace InScrutable
                     {
                         case ScramblerState.Append:
                             scramblerState = ScramblerState.FirstClusterStart;
-                            ixVowelClusterStart = iiCurrentIndex;
-                            Debug.WriteLine($"Detected (First) char of interst {chCurrentChar} at {ixVowelClusterStart}");
+                            ixClusterOfInterestStart = iiCurrentIndex;
+                            Debug.WriteLine($"Detected (First) char of interst {chCurrentChar} at {ixClusterOfInterestStart}");
                             break;
                         case ScramblerState.FirstClusterEnd:
                             scramblerState = ScramblerState.SecondClusterStart;
-                            ixVowelClusterStart = iiCurrentIndex;
-                            Debug.WriteLine($"Detected (Second) char of interst {chCurrentChar} at {ixVowelClusterStart}");
+                            ixClusterOfInterestStart = iiCurrentIndex;
+                            Debug.WriteLine($"Detected (Second) char of interst {chCurrentChar} at {ixClusterOfInterestStart}");
                             break;
                         case ScramblerState.FirstClusterStart:
                         case ScramblerState.SecondClusterStart:
@@ -132,8 +132,8 @@ namespace InScrutable
                     }
                 }
             }
-            int residuesStartIndex = (previousVowelCluster.IsInitialized ? previousVowelCluster.ClusterStartIndex :
-                (scramblerState != ScramblerState.Append ? ixVowelClusterStart : - 1));
+            int residuesStartIndex = (previousClusterOfInterest.IsInitialized ? previousClusterOfInterest.ClusterStartIndex :
+                (scramblerState != ScramblerState.Append ? ixClusterOfInterestStart : - 1));
             if (residuesStartIndex > -1)
             {
                 Debug.WriteLine("Residues detected; Appending for completeness");
