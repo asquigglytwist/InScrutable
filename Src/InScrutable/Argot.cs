@@ -67,7 +67,7 @@ namespace InScrutable
             {
                 var chCurrentChar = plainString[iiCurrentIndex];
                 var bIsCharAVowelOrY = charInterestChecker(chCurrentChar);
-                Debug.WriteLine($"Char {chCurrentChar} is {0}a Vowel", bIsCharAVowelOrY ? "" : "not ");
+                Debug.WriteLine($"Char {chCurrentChar} is {(bIsCharAVowelOrY ? string.Empty : "not ")}a Vowel");
                 if (!bIsCharAVowelOrY)
                 {
                     switch (scramblerState)
