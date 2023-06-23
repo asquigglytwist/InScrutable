@@ -44,7 +44,10 @@ namespace InScrutable.Test
                     var outputActuals = Argot.PhoneticSwap(inputPlain);
                     Assert.AreEqual(inputPlain.Length, outputExpected.Length);
                     Assert.AreEqual(inputPlain.Length, outputActuals.Length);
-                    //Assert.AreNotEqual(inputPlain, outputExpected);
+                    if (inputPlain != outputExpected)
+                    {
+                        Assert.AreNotEqual(inputPlain, outputActuals);
+                    }
                     Assert.AreEqual(outputExpected, outputActuals);
                 }
             }
