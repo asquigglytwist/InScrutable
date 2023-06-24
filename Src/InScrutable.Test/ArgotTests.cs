@@ -1,56 +1,69 @@
+using System.Diagnostics;
+
 namespace InScrutable.Test
 {
     [TestClass]
     public class ArgotTests
     {
+        static void PhoneticSwap_TestList((string inputPlain, string outputVowelMode, string outputConsonantMode)[] testCombos)
+        {
+            foreach (var scramblerTestCombo in testCombos)
+            {
+                var inputPlain = scramblerTestCombo.inputPlain;
+                var outputExpected_VowelMode = scramblerTestCombo.outputVowelMode;
+                var outputExpected_ConsonantMode = scramblerTestCombo.outputConsonantMode;
+                var outputActuals_VowelMode = Argot.PhoneticSwap(inputPlain);
+                var outputActuals_ConsonantMode = Argot.PhoneticSwap(inputPlain, false);
+                Debug.WriteLine($"[TEST]  Input = {inputPlain}    Actuals_VowelMode = {outputActuals_VowelMode}    Actuals_ConsonantMode = {outputActuals_ConsonantMode}");
+                Assert.AreEqual(inputPlain.Length, outputExpected_VowelMode.Length);
+                Assert.AreEqual(inputPlain.Length, outputActuals_VowelMode.Length);
+                Assert.AreEqual(inputPlain.Length, outputActuals_ConsonantMode.Length);
+                if (inputPlain != outputExpected_VowelMode)
+                {
+                    Assert.AreNotEqual(inputPlain, outputActuals_VowelMode);
+                    Assert.AreNotEqual(inputPlain, outputActuals_ConsonantMode);
+                }
+                Assert.AreEqual(outputExpected_VowelMode, outputActuals_VowelMode);
+                Assert.AreEqual(outputExpected_ConsonantMode, outputActuals_ConsonantMode);
+            }
+        }
+
         [TestMethod]
         public void PhoneticSwap_Vowels()
         {
-            (string inputPlain, string outputScrambled)[] testCombos_RemainUnchanged_Short = new[] {
-                (string.Empty, string.Empty),
-                ("A", "A"),
-                ("e", "e"),
-                ("Z", "Z"),
-                ("x", "x"),
-                ("Y", "Y"),
-                ("y", "y"),
-                ("Aa", "Aa"),
-                ("Yy", "Yy"),
-                ("BbC", "BbC"),
-                ("CaT", "CaT")
+            (string, string, string)[] testCombos_RemainUnchanged_Short = new[] {
+                (string.Empty, string.Empty, string.Empty),
+                ("A", "A", "A"),
+                ("e", "e", "e"),
+                ("Z", "Z", "Z"),
+                ("x", "x", "x"),
+                ("Y", "Y", "Y"),
+                ("y", "y", "y"),
+                ("Aa", "Aa", "Aa"),
+                ("Yy", "Yy", "Yy"),
+                ("BbC", "BbC", "BbC")
             };
-            (string inputPlain, string outputScrambled)[] testCombos_RemainUnchanged_Long = new[] {
-                ("AEIOUYaeiouy", "AEIOUYaeiouy"),
-                ("aBCDFGHJKLMNPQRSTVWXZ", "aBCDFGHJKLMNPQRSTVWXZ"),
+            (string, string, string)[] testCombos_RemainUnchanged_Long = new[] {
+                ("AEIOUYaeiouy", "AEIOUYaeiouy", "AEIOUYaeiouy"),
+                ("aBCDFGHJKLMNPQRSTVWXZ", "aBCDFGHJKLMNPQRSTVWXZ", "aBCDFGHJKLMNPQRSTVWXZ"),
             };
-            (string inputPlain, string outputScrambled)[] testCombos_TwoVowelClusters = new[] {
-                ("Abecdfiogh", "ebAcdfiogh"),
-                ("AebcdifOgh", "ibcdAefOgh")
+            (string, string, string)[] testCombos_TwoVowelClusters = new[] {
+                ("Abecdfiogh", "ebAcdfiogh", "Acdfebiogh"),
+                ("AebcdifOgh", "ibcdAefOgh", "AefibcdOgh")
             };
-            (string inputPlain, string outputScrambled)[] testCombos_LongerVowelClusters = new[] {
-                ("AebcdifOghuyujklm", "ibcdAefuyughOjklm")
+            (string, string, string)[] testCombos_TwoConsonantClusters = new[] {
+                ("CaT", "CaT", "TaC"),
+                ("CaTch", "CaTch", "TchaC"),
+                ("ChaRt", "ChaRt", "RtaCh")
+            };
+            (string, string, string)[] testCombos_LongerVowelClusters = new[] {
+                ("AebcdifOghuyujklm", "ibcdAefuyughOjklm", "AefibcdOjklmuyugh")
             };
             PhoneticSwap_TestList(testCombos_RemainUnchanged_Short);
             PhoneticSwap_TestList(testCombos_RemainUnchanged_Long);
             PhoneticSwap_TestList(testCombos_TwoVowelClusters);
+            PhoneticSwap_TestList(testCombos_TwoConsonantClusters);
             PhoneticSwap_TestList(testCombos_LongerVowelClusters);
-
-            static void PhoneticSwap_TestList((string inputPlain, string outputScrambled)[] testCombos)
-            {
-                foreach (var scramblerTestCombo in testCombos)
-                {
-                    var inputPlain = scramblerTestCombo.inputPlain;
-                    var outputExpected = scramblerTestCombo.outputScrambled;
-                    var outputActuals = Argot.PhoneticSwap(inputPlain);
-                    Assert.AreEqual(inputPlain.Length, outputExpected.Length);
-                    Assert.AreEqual(inputPlain.Length, outputActuals.Length);
-                    if (inputPlain != outputExpected)
-                    {
-                        Assert.AreNotEqual(inputPlain, outputActuals);
-                    }
-                    Assert.AreEqual(outputExpected, outputActuals);
-                }
-            }
         }
     }
 }
