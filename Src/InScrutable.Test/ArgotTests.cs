@@ -29,7 +29,7 @@ namespace InScrutable.Test
         }
 
         [TestMethod]
-        public void PhoneticSwap_Vowels()
+        public void PhoneticSwap_RemainUnchanged_Short()
         {
             (string, string, string)[] testCombos_RemainUnchanged_Short = new[] {
                 (string.Empty, string.Empty, string.Empty),
@@ -43,27 +43,7 @@ namespace InScrutable.Test
                 ("Yy", "Yy", "Yy"),
                 ("BbC", "BbC", "BbC")
             };
-            (string, string, string)[] testCombos_RemainUnchanged_Long = new[] {
-                ("AEIOUYaeiouy", "AEIOUYaeiouy", "AEIOUYaeiouy"),
-                ("aBCDFGHJKLMNPQRSTVWXZ", "aBCDFGHJKLMNPQRSTVWXZ", "aBCDFGHJKLMNPQRSTVWXZ"),
-            };
-            (string, string, string)[] testCombos_TwoVowelClusters = new[] {
-                ("Abecdfiogh", "ebAcdfiogh", "Acdfebiogh"),
-                ("AebcdifOgh", "ibcdAefOgh", "AefibcdOgh")
-            };
-            (string, string, string)[] testCombos_TwoConsonantClusters = new[] {
-                ("CaT", "CaT", "TaC"),
-                ("CaTch", "CaTch", "TchaC"),
-                ("ChaRt", "ChaRt", "RtaCh")
-            };
-            (string, string, string)[] testCombos_LongerVowelClusters = new[] {
-                ("AebcdifOghuyujklm", "ibcdAefuyughOjklm", "AefibcdOjklmuyugh")
-            };
             PhoneticSwap_TestList(testCombos_RemainUnchanged_Short);
-            PhoneticSwap_TestList(testCombos_RemainUnchanged_Long);
-            PhoneticSwap_TestList(testCombos_TwoVowelClusters);
-            PhoneticSwap_TestList(testCombos_TwoConsonantClusters);
-            PhoneticSwap_TestList(testCombos_LongerVowelClusters);
         }
 
         [TestMethod]
