@@ -16,10 +16,23 @@ namespace InScrutable
 
         internal bool IsInitialized { get; private set; }
 
+#if DEBUG
+        internal readonly string OriginalCompleteString;
+
+        internal string SubStringCluster { get; private set; }
+#endif
+
         public ClusterMarker()
         {
             ResetToInitState();
         }
+
+#if DEBUG
+        internal ClusterMarker(string original)
+        {
+            OriginalCompleteString = original;
+        }
+#endif
 
         internal ClusterMarker(int clusterStart, int clusterEnd)
         {
@@ -30,6 +43,9 @@ namespace InScrutable
         {
             ClusterStartIndex = ClusterEndIndex = UnInitializedIndex;
             IsInitialized = false;
+#if DEBUG
+            SubStringCluster = string.Empty;
+#endif
         }
 
         internal void Assign(int clusterStart, int clusterEnd)
@@ -37,6 +53,13 @@ namespace InScrutable
             ClusterStartIndex = clusterStart;
             ClusterEndIndex = clusterEnd;
             IsInitialized = true;
+#if DEBUG
+            if (!string.IsNullOrEmpty(OriginalCompleteString))
+            {
+                SubStringCluster = OriginalCompleteString.Substring(ClusterStartIndex,
+                    ClusterEndIndex - ClusterStartIndex + 1);
+            }
+#endif
         }
     }
 
