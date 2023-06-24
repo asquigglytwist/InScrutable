@@ -82,9 +82,6 @@ namespace InScrutable
             CheckCharInterest charInterestChecker = swapVowels ? Constants.IsVowelOrY : Constants.IsNotVowelOrY;
             ScramblerState scramblerState = ScramblerState.Append;
             StringBuilder sb = new(plainString.Length);
-            ClusterMarker previousClusterOfInterest = new();
-            ClusterMarker currentClusterOfInterest = new();
-
             ClusterMarker previousClusterOfInterest =
 #if DEBUG
                 new(plainString);
@@ -121,24 +118,9 @@ namespace InScrutable
                             currentClusterOfInterest.Assign(ixClusterOfInterestStart, iiCurrentIndex - 1);
                             Debug.WriteLine("(Second) Cluster marked:  {0}-{1}",
                                 currentClusterOfInterest.ClusterStartIndex, currentClusterOfInterest.ClusterEndIndex);
-                            for (int jj = currentClusterOfInterest.ClusterStartIndex; jj <= currentClusterOfInterest.ClusterEndIndex; jj++)
-                            {
-                                sb.Append(plainString[jj]);
-                            }
-                            Debug.WriteLine($"After appending 2nd cluster:  {sb}");
-                            for (int jj = previousClusterOfInterest.ClusterEndIndex + 1; jj < currentClusterOfInterest.ClusterStartIndex; jj++)
-                            {
-                                sb.Append(plainString[jj]);
-                            }
-                            Debug.WriteLine($"After appending interim cluster:  {sb}");
-                            for (int jj = previousClusterOfInterest.ClusterStartIndex; jj <= previousClusterOfInterest.ClusterEndIndex; jj++)
-                            {
-                                sb.Append(plainString[jj]);
-                            }
+                            HandleMarkedClusters(plainString, ref previousClusterOfInterest, ref currentClusterOfInterest, sb, ref scramblerState);
                             sb.Append(chCurrentChar);
-                            Debug.WriteLine($"After appending first cluster:  {sb}");
-                            previousClusterOfInterest.ResetToInitState();
-                            scramblerState = ScramblerState.Append;
+                            Debug.WriteLine($"After appending current char:  {sb}");
                             break;
                         case ScramblerState.FirstClusterEnd:
                         case ScramblerState.SecondClusterEnd:
@@ -179,6 +161,28 @@ namespace InScrutable
                 Debug.WriteLine($"After final append:  {sb}");
             }
             return sb.ToString();
+        }
+
+        private static void HandleMarkedClusters(string plainString, ref ClusterMarker firstClusterOfInterest, ref ClusterMarker secondClusterOfInterest, StringBuilder sb, ref ScramblerState scramblerState)
+        {
+            for (int jj = secondClusterOfInterest.ClusterStartIndex; jj <= secondClusterOfInterest.ClusterEndIndex; jj++)
+            {
+                sb.Append(plainString[jj]);
+            }
+            Debug.WriteLine($"After appending 2nd cluster:  {sb}");
+            for (int jj = firstClusterOfInterest.ClusterEndIndex + 1; jj < secondClusterOfInterest.ClusterStartIndex; jj++)
+            {
+                sb.Append(plainString[jj]);
+            }
+            Debug.WriteLine($"After appending interim cluster:  {sb}");
+            for (int jj = firstClusterOfInterest.ClusterStartIndex; jj <= firstClusterOfInterest.ClusterEndIndex; jj++)
+            {
+                sb.Append(plainString[jj]);
+            }
+            firstClusterOfInterest.ResetToInitState();
+            secondClusterOfInterest.ResetToInitState();
+            scramblerState = ScramblerState.Append;
+            Debug.WriteLine($"After appending the two cluster:  {sb}");
         }
     }
 }
