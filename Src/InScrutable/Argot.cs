@@ -149,17 +149,22 @@ namespace InScrutable
                     }
                 }
             }
+            if (scramblerState == ScramblerState.SecondClusterStart)
+            {
+                currentClusterOfInterest.Assign(ixClusterOfInterestStart, plainString.Length - 1);
+                HandleMarkedClusters(plainString, ref previousClusterOfInterest, ref currentClusterOfInterest, sb, ref scramblerState);
+            }
             int residuesStartIndex = (previousClusterOfInterest.IsInitialized ? previousClusterOfInterest.ClusterStartIndex :
                 (scramblerState != ScramblerState.Append ? ixClusterOfInterestStart : - 1));
             if (residuesStartIndex > -1)
             {
-                Debug.WriteLine("Residues detected; Appending for completeness");
+                Debug.WriteLine("Residues detected; Appending, for completeness");
                 for (int iiCurrentIndex = residuesStartIndex; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
                 {
                     sb.Append(plainString[iiCurrentIndex]);
                 }
-                Debug.WriteLine($"After final append:  {sb}");
             }
+            Debug.WriteLine($"After final append:  {sb}");
             return sb.ToString();
         }
 
