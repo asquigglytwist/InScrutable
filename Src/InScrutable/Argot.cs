@@ -85,6 +85,18 @@ namespace InScrutable
             ClusterMarker previousClusterOfInterest = new();
             ClusterMarker currentClusterOfInterest = new();
 
+            ClusterMarker previousClusterOfInterest =
+#if DEBUG
+                new(plainString);
+#else
+        new();
+#endif
+            ClusterMarker currentClusterOfInterest =
+#if DEBUG
+                new(plainString);
+#else
+        new();
+#endif
             int ixClusterOfInterestStart = 0;
             for (int iiCurrentIndex = 0; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
             {
