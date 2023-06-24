@@ -65,5 +65,45 @@ namespace InScrutable.Test
             PhoneticSwap_TestList(testCombos_TwoConsonantClusters);
             PhoneticSwap_TestList(testCombos_LongerVowelClusters);
         }
+
+        [TestMethod]
+        public void PhoneticSwap_RemainUnchanged_Long()
+        {
+            (string, string, string)[] testCombos_RemainUnchanged_Long = new[] {
+                ("AEIOUYaeiouy", "AEIOUYaeiouy", "AEIOUYaeiouy"),
+                ("aBCDFGHJKLMNPQRSTVWXZ", "aBCDFGHJKLMNPQRSTVWXZ", "aBCDFGHJKLMNPQRSTVWXZ"),
+            };
+            PhoneticSwap_TestList(testCombos_RemainUnchanged_Long);
+        }
+
+        [TestMethod]
+        public void PhoneticSwap_TwoVowelClusters()
+        {
+            (string, string, string)[] testCombos_TwoVowelClusters = new[] {
+                ("Abecdfiogh", "ebAcdfiogh", "Acdfebiogh"),
+                ("AebcdifOgh", "ibcdAefOgh", "AefibcdOgh")
+            };
+            PhoneticSwap_TestList(testCombos_TwoVowelClusters);
+        }
+
+        [TestMethod]
+        public void PhoneticSwap_TwoConsonantClusters()
+        {
+            (string, string, string)[] testCombos_TwoConsonantClusters = new[] {
+                ("CaT", "CaT", "TaC"),
+                ("CaTch", "CaTch", "TchaC"),
+                ("ChaRt", "ChaRt", "RtaCh")
+            };
+            PhoneticSwap_TestList(testCombos_TwoConsonantClusters);
+        }
+
+        [TestMethod]
+        public void PhoneticSwap_LongerVowelClusters()
+        {
+            (string, string, string)[] testCombos_LongerVowelClusters = new[] {
+                ("AebcdifOghuyujklm", "ibcdAefuyughOjklm", "AefibcdOjklmuyugh")
+            };
+            PhoneticSwap_TestList(testCombos_LongerVowelClusters);
+        }
     }
 }
