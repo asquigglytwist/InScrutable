@@ -79,7 +79,7 @@ namespace InScrutable
         internal static string PhoneticSwap(string plainString, in bool swapVowels = true)
         {
             Debug.WriteLine($"SwapVowels = {swapVowels}\tInput:\n{plainString}");
-            CheckCharInterest charInterestChecker = swapVowels ? Constants.IsVowelOrY : Constants.IsNotVowelOrY;
+            CheckCharInterest charInterestChecker = swapVowels ? Extensions.IsVowelOrY : Extensions.IsNotVowelOrY;
             ScramblerState scramblerState = ScramblerState.Append;
             StringBuilder sb = new(plainString.Length);
             ClusterMarker previousClusterOfInterest =
