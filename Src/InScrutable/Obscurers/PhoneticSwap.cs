@@ -6,36 +6,43 @@ using System.Text;
 
 namespace InScrutable.Obscurers
 {
-    internal class PhoneticSwap
+    internal enum ScramblerState
+    {
+        Append,
+        FirstClusterStart,
+        FirstClusterEnd,
+        SecondClusterStart,
+        SecondClusterEnd
+    }
+
+    internal class PhoneticSwap : IArgot
     {
         public delegate bool CheckCharInterest(char charOfInterest);
 
         private CheckCharInterest charInterestChecker;
+        ScramblerState scramblerState;
+        StringBuilder? sb;
+        ClusterMarker firstClusterOfInterest, secondClusterOfInterest;
 
         internal PhoneticSwap(bool swapVowels = true)
         {
+            scramblerState = ScramblerState.Append;
             Debug.WriteLine($"SwapVowels = {swapVowels}");
             charInterestChecker = swapVowels ? Extensions.IsVowelOrY : Extensions.IsNotVowelOrY;
         }
 
-        internal string Obscure(string plainString)
+        public string Obscure(string plainString)
         {
-            Debug.WriteLine($"Input:  {plainString}");
-            ScramblerState scramblerState = ScramblerState.Append;
-            StringBuilder sb = new(plainString.Length);
-            ClusterMarker previousClusterOfInterest =
-#if DEBUG
-                new(plainString);
-#else
-        new();
-#endif
-            ClusterMarker currentClusterOfInterest =
-#if DEBUG
-                new(plainString);
-#else
-        new();
-#endif
             int ixClusterOfInterestStart = 0;
+            Debug.WriteLine($"Input:  {plainString}");
+            sb = new(plainString.Length);
+#if DEBUG
+            firstClusterOfInterest = new(plainString);
+            secondClusterOfInterest = new(plainString);
+#else
+            currentClusterOfInterest = new();
+            previousClusterOfInterest = new();
+#endif
             for (int iiCurrentIndex = 0; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
             {
                 var chCurrentChar = plainString[iiCurrentIndex];
@@ -51,15 +58,15 @@ namespace InScrutable.Obscurers
                             break;
                         case ScramblerState.FirstClusterStart:
                             scramblerState = ScramblerState.FirstClusterEnd;
-                            previousClusterOfInterest.Assign(ixClusterOfInterestStart, iiCurrentIndex - 1);
+                            firstClusterOfInterest.Assign(ixClusterOfInterestStart, iiCurrentIndex - 1);
                             Debug.WriteLine("(First) Cluster marked:  {0}-{1}",
-                                previousClusterOfInterest.ClusterStartIndex, previousClusterOfInterest.ClusterEndIndex);
+                                firstClusterOfInterest.ClusterStartIndex, firstClusterOfInterest.ClusterEndIndex);
                             break;
                         case ScramblerState.SecondClusterStart:
-                            currentClusterOfInterest.Assign(ixClusterOfInterestStart, iiCurrentIndex - 1);
+                            secondClusterOfInterest.Assign(ixClusterOfInterestStart, iiCurrentIndex - 1);
                             Debug.WriteLine("(Second) Cluster marked:  {0}-{1}",
-                                currentClusterOfInterest.ClusterStartIndex, currentClusterOfInterest.ClusterEndIndex);
-                            HandleMarkedClusters(plainString, ref previousClusterOfInterest, ref currentClusterOfInterest, sb, ref scramblerState);
+                                secondClusterOfInterest.ClusterStartIndex, secondClusterOfInterest.ClusterEndIndex);
+                            HandleMarkedClusters(plainString);
                             sb.Append(chCurrentChar);
                             Debug.WriteLine($"After appending current char:  {sb}");
                             break;
@@ -92,10 +99,10 @@ namespace InScrutable.Obscurers
             }
             if (scramblerState == ScramblerState.SecondClusterStart)
             {
-                currentClusterOfInterest.Assign(ixClusterOfInterestStart, plainString.Length - 1);
-                HandleMarkedClusters(plainString, ref previousClusterOfInterest, ref currentClusterOfInterest, sb, ref scramblerState);
+                secondClusterOfInterest.Assign(ixClusterOfInterestStart, plainString.Length - 1);
+                HandleMarkedClusters(plainString);
             }
-            int residuesStartIndex = (previousClusterOfInterest.IsInitialized ? previousClusterOfInterest.ClusterStartIndex :
+            int residuesStartIndex = (firstClusterOfInterest.IsInitialized ? firstClusterOfInterest.ClusterStartIndex :
                 (scramblerState != ScramblerState.Append ? ixClusterOfInterestStart : -1));
             if (residuesStartIndex > -1)
             {
@@ -109,26 +116,41 @@ namespace InScrutable.Obscurers
             return sb.ToString();
         }
 
-        private static void HandleMarkedClusters(string plainString, ref ClusterMarker firstClusterOfInterest, ref ClusterMarker secondClusterOfInterest, StringBuilder sb, ref ScramblerState scramblerState)
+        private void HandleMarkedClusters(string plainString)
         {
-            for (int jj = secondClusterOfInterest.ClusterStartIndex; jj <= secondClusterOfInterest.ClusterEndIndex; jj++)
+            if (sb != null)
             {
-                sb.Append(plainString[jj]);
+                for (int jj = secondClusterOfInterest.ClusterStartIndex; jj <= secondClusterOfInterest.ClusterEndIndex; jj++)
+                {
+                    sb.Append(plainString[jj]);
+                }
+                Debug.WriteLine($"After appending 2nd cluster:  {sb}");
+                for (int jj = firstClusterOfInterest.ClusterEndIndex + 1; jj < secondClusterOfInterest.ClusterStartIndex; jj++)
+                {
+                    sb.Append(plainString[jj]);
+                }
+                Debug.WriteLine($"After appending interim cluster:  {sb}");
+                for (int jj = firstClusterOfInterest.ClusterStartIndex; jj <= firstClusterOfInterest.ClusterEndIndex; jj++)
+                {
+                    sb.Append(plainString[jj]);
+                }
+                firstClusterOfInterest.ResetToInitState();
+                secondClusterOfInterest.ResetToInitState();
+                scramblerState = ScramblerState.Append;
+                Debug.WriteLine($"After appending the two cluster:  {sb}");
             }
-            Debug.WriteLine($"After appending 2nd cluster:  {sb}");
-            for (int jj = firstClusterOfInterest.ClusterEndIndex + 1; jj < secondClusterOfInterest.ClusterStartIndex; jj++)
-            {
-                sb.Append(plainString[jj]);
-            }
-            Debug.WriteLine($"After appending interim cluster:  {sb}");
-            for (int jj = firstClusterOfInterest.ClusterStartIndex; jj <= firstClusterOfInterest.ClusterEndIndex; jj++)
-            {
-                sb.Append(plainString[jj]);
-            }
-            firstClusterOfInterest.ResetToInitState();
-            secondClusterOfInterest.ResetToInitState();
-            scramblerState = ScramblerState.Append;
-            Debug.WriteLine($"After appending the two cluster:  {sb}");
         }
+
+        #region IArgot
+        string IArgot.Obscure(string plainString)
+        {
+            return Obscure(plainString);
+        }
+
+        string IArgot.Reveal(string obscuredString)
+        {
+            return Obscure(obscuredString);
+        }
+        #endregion
     }
 }
