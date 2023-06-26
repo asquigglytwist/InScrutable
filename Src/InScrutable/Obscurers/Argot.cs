@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace InScrutable
+namespace InScrutable.Obscurers
 {
     internal enum ScramblerState
     {

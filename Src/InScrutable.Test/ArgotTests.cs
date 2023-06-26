@@ -1,3 +1,4 @@
+using InScrutable.Obscurers;
 using System.Diagnostics;
 
 namespace InScrutable.Test
