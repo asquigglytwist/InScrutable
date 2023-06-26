@@ -9,8 +9,12 @@
     <Import_RootNamespace>InScrutable</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
-    <Compile Include="..\InScrutable\Argot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ClusterMarker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obscurers\Argot.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Obscurers\" />
   </ItemGroup>
 </Project>
