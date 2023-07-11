@@ -64,8 +64,8 @@ namespace InScrutable.Obscurers
             firstClusterOfInterest = new(plainString);
             secondClusterOfInterest = new(plainString);
 #else
-            currentClusterOfInterest = new();
-            previousClusterOfInterest = new();
+            firstClusterOfInterest = new();
+            secondClusterOfInterest = new();
 #endif
             for (int iiCurrentIndex = 0; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
             {

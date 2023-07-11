@@ -13,8 +13,10 @@ namespace InScrutable.Test
                 var inputPlain = scramblerTestCombo.inputPlain;
                 var outputExpected_VowelMode = scramblerTestCombo.outputVowelMode;
                 var outputExpected_ConsonantMode = scramblerTestCombo.outputConsonantMode;
-                var outputActuals_VowelMode = IArgot.PhoneticSwap(inputPlain);
-                var outputActuals_ConsonantMode = IArgot.PhoneticSwap(inputPlain, false);
+                IArgot phSwap_VowelMode = new PhoneticSwap();
+                IArgot phSwap_ConsonantMode = new PhoneticSwap(false);
+                var outputActuals_VowelMode = phSwap_VowelMode.Obscure(inputPlain);
+                var outputActuals_ConsonantMode = phSwap_ConsonantMode.Obscure(inputPlain);
                 Debug.WriteLine($"[TEST]  Input = {inputPlain}    Actuals_VowelMode = {outputActuals_VowelMode}    Actuals_ConsonantMode = {outputActuals_ConsonantMode}");
                 Assert.AreEqual(inputPlain.Length, outputExpected_VowelMode.Length);
                 Assert.AreEqual(inputPlain.Length, outputActuals_VowelMode.Length);

@@ -21,6 +21,9 @@ namespace InScrutable.Helpers
 #endif
 
         public ClusterMarker()
+#if DEBUG
+        : this(string.Empty)
+#endif
         {
             ResetToInitState();
         }
@@ -28,14 +31,11 @@ namespace InScrutable.Helpers
 #if DEBUG
         internal ClusterMarker(string original)
         {
+            ResetToInitState();
             OriginalCompleteString = original;
+            SubStringCluster = original;
         }
 #endif
-
-        internal ClusterMarker(int clusterStart, int clusterEnd)
-        {
-            Assign(clusterStart, clusterEnd);
-        }
 
         internal void ResetToInitState()
         {
