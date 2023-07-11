@@ -6,15 +6,39 @@ using System.Text;
 
 namespace InScrutable.Obscurers
 {
+    /// <summary>
+    /// <para>Possible internal states of the <see cref="PhoneticSwap"/> variant of <see cref="IArgot"/></para>
+    /// [DevRef]:  <see cref="PhoneticSwap" /> internally functions as a finite state machine - where state dictates the reaction to continuous parsing
+    /// </summary>
     internal enum PhoneticSwapInternalState
     {
+        /// <summary>
+        /// Parser in "Append" mode where the inflow is directly appended to the final output
+        /// </summary>
         Append,
+        /// <summary>
+        /// Discovered / encountered the "First" cluster that matches the "Phonetic" criteria
+        /// </summary>
         FirstClusterStart,
+        /// <summary>
+        /// "First" cluster of interest has been completed
+        /// </summary>
         FirstClusterEnd,
+        /// <summary>
+        /// Discovered / encountered the "Second" cluster that matches the "Phonetic" criteria
+        /// </summary>
         SecondClusterStart,
+        /// <summary>
+        /// <para>"Second" cluster of interest has been completed</para>
+        /// The <see cref="PhoneticSwap" /> parser performs the swap at this point
+        /// </summary>
         SecondClusterEnd
     }
 
+    /// <summary>
+    /// <para>Argot generation / string mutation based on phonetically grouped character clusters</para>
+    /// NOTE:  This is a self-reversible <see cref="IArgot" /> i.e., invoking <see cref="Obscure(string)" /> twice in succession as a chain results in the original PlainText  (Same as the infamous ROT13 cipher - https://en.wikipedia.org/wiki/ROT13)
+    /// </summary>
     internal class PhoneticSwap : IArgot
     {
         public delegate bool CheckCharInterest(char charOfInterest);
