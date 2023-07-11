@@ -141,7 +141,7 @@ namespace InScrutable.Obscurers
             }
         }
 
-        #region IArgot
+        #region IArgot Implementation
         string IArgot.Obscure(string plainString)
         {
             return Obscure(plainString);
