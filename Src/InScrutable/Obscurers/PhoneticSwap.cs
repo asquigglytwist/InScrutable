@@ -37,7 +37,7 @@ namespace InScrutable.Obscurers
 
     /// <summary>
     /// <para>Argot generation / string mutation based on phonetically grouped character clusters</para>
-    /// NOTE:  This is a self-reversible <see cref="IArgot" /> i.e., invoking <see cref="Obscure(string)" /> twice in succession as a chain results in the original PlainText  (Same as the infamous ROT13 cipher - https://en.wikipedia.org/wiki/ROT13)
+    /// NOTE:  This is an Involution (https://en.wikipedia.org/wiki/Involution_(mathematics)) <see cref="IArgot" /> i.e., it is its own inverse.  Invoking <see cref="Obscure(string)" /> twice in succession as a chain results in the original PlainText  (Same as the infamous ROT13 cipher - https://en.wikipedia.org/wiki/ROT13)
     /// </summary>
     internal class PhoneticSwap : IArgot
     {
