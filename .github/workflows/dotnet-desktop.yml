@@ -83,6 +83,7 @@ jobs:
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test
+      working-directory: .\Src\InScrutable.Test\
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
