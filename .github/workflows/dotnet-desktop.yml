@@ -80,14 +80,16 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: ReBuild solution
-      run: msbuild $env:Solution_Name /t:rebuild /p:Configuration=$env:Configuration
+    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore the application
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
       working-directory: .\Src\
       env:
         Configuration: ${{ matrix.configuration }}
 
-    - name: Bundle Artifacts
-      run: Compress-Archive -Path .\Src\InScrutable.Test\bin\$env:Configuration\*\InScrutable*.* -Destination .\InScrutable.Test_$env:Configuration.zip
+    - name: ReBuild solution
+      run: msbuild $env:Solution_Name /t:rebuild /p:Configuration=$env:Configuration
+      working-directory: .\Src\
       env:
         Configuration: ${{ matrix.configuration }}
 
@@ -96,14 +98,12 @@ jobs:
       run: dotnet test
       working-directory: .\Src\InScrutable.Test\
 
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      working-directory: .\Src\
+    - name: Bundle Artifacts
+      run: Compress-Archive -Path .\Src\InScrutable.Test\bin\$env:Configuration\*\InScrutable*.* -Destination .\InScrutable.Test_$env:Configuration.zip
       env:
         Configuration: ${{ matrix.configuration }}
 
-    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
+    # Upload the Artifacts: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
