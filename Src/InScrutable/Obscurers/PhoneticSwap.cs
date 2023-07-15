@@ -41,6 +41,11 @@ namespace InScrutable.Obscurers
     /// </summary>
     internal class PhoneticSwap : IArgot
     {
+        /// <summary>
+        /// Delegate to function (Predicate) that checks if given <see cref="char" /> meets expected criteria
+        /// </summary>
+        /// <param name="charOfInterest">The <see cref="char" /> to be checked</param>
+        /// <returns>True, if criteria is met; False, otherwise</returns>
         public delegate bool CheckCharInterest(char charOfInterest);
 
         private readonly CheckCharInterest charInterestChecker;
@@ -55,21 +60,26 @@ namespace InScrutable.Obscurers
             charInterestChecker = swapVowels ? Extensions.IsVowelOrY : Extensions.IsNotVowelOrY;
         }
 
-        public string Parse(string plainString)
+        /// <summary>
+        /// Internal function to swap identified phonetic clusters
+        /// </summary>
+        /// <param name="inputString">Input string where the cluster swap is to be performed</param>
+        /// <returns>The resulting string after the cluster swap is performed</returns>
+        protected string SwapPhoneticClustersInternal(string inputString)
         {
             int ixClusterOfInterestStart = 0;
-            Debug.WriteLine($"Input:  {plainString}");
-            sb = new(plainString.Length);
+            Debug.WriteLine($"Input:  {inputString}");
+            sb = new(inputString.Length);
 #if DEBUG
-            firstClusterOfInterest = new(plainString);
-            secondClusterOfInterest = new(plainString);
+            firstClusterOfInterest = new(inputString);
+            secondClusterOfInterest = new(inputString);
 #else
             firstClusterOfInterest = new();
             secondClusterOfInterest = new();
 #endif
-            for (int iiCurrentIndex = 0; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
+            for (int iiCurrentIndex = 0; iiCurrentIndex < inputString.Length; iiCurrentIndex++)
             {
-                var chCurrentChar = plainString[iiCurrentIndex];
+                var chCurrentChar = inputString[iiCurrentIndex];
                 var bIsCharOfInterest = charInterestChecker(chCurrentChar);
                 Debug.WriteLine($"Char {chCurrentChar} does {(bIsCharOfInterest ? string.Empty : "not ")}match criteria / interest check");
                 if (!bIsCharOfInterest)
@@ -90,7 +100,7 @@ namespace InScrutable.Obscurers
                             secondClusterOfInterest.Assign(ixClusterOfInterestStart, iiCurrentIndex - 1);
                             Debug.WriteLine("(Second) Cluster marked:  {0}-{1}",
                                 secondClusterOfInterest.ClusterStartIndex, secondClusterOfInterest.ClusterEndIndex);
-                            HandleMarkedClusters(plainString);
+                            HandleMarkedClusters(inputString);
                             sb.Append(chCurrentChar);
                             Debug.WriteLine($"After appending current char:  {sb}");
                             break;
@@ -123,40 +133,44 @@ namespace InScrutable.Obscurers
             }
             if (scramblerState == PhoneticSwapInternalState.SecondClusterStart)
             {
-                secondClusterOfInterest.Assign(ixClusterOfInterestStart, plainString.Length - 1);
-                HandleMarkedClusters(plainString);
+                secondClusterOfInterest.Assign(ixClusterOfInterestStart, inputString.Length - 1);
+                HandleMarkedClusters(inputString);
             }
             int residuesStartIndex = (firstClusterOfInterest.IsInitialized ? firstClusterOfInterest.ClusterStartIndex :
                 (scramblerState != PhoneticSwapInternalState.Append ? ixClusterOfInterestStart : -1));
             if (residuesStartIndex > -1)
             {
                 Debug.WriteLine("Residues detected; Appending, for completeness");
-                for (int iiCurrentIndex = residuesStartIndex; iiCurrentIndex < plainString.Length; iiCurrentIndex++)
+                for (int iiCurrentIndex = residuesStartIndex; iiCurrentIndex < inputString.Length; iiCurrentIndex++)
                 {
-                    sb.Append(plainString[iiCurrentIndex]);
+                    sb.Append(inputString[iiCurrentIndex]);
                 }
             }
             Debug.WriteLine($"After final append:  {sb}");
             return sb.ToString();
         }
 
-        private void HandleMarkedClusters(string plainString)
+        /// <summary>
+        /// Internal function to handle the marked clusters
+        /// </summary>
+        /// <param name="inputString">Input string where the cluster swap is to be performed</param>
+        protected void HandleMarkedClusters(string inputString)
         {
             if (sb != null)
             {
                 for (int jj = secondClusterOfInterest.ClusterStartIndex; jj <= secondClusterOfInterest.ClusterEndIndex; jj++)
                 {
-                    sb.Append(plainString[jj]);
+                    sb.Append(inputString[jj]);
                 }
                 Debug.WriteLine($"After appending 2nd cluster:  {sb}");
                 for (int jj = firstClusterOfInterest.ClusterEndIndex + 1; jj < secondClusterOfInterest.ClusterStartIndex; jj++)
                 {
-                    sb.Append(plainString[jj]);
+                    sb.Append(inputString[jj]);
                 }
                 Debug.WriteLine($"After appending interim cluster:  {sb}");
                 for (int jj = firstClusterOfInterest.ClusterStartIndex; jj <= firstClusterOfInterest.ClusterEndIndex; jj++)
                 {
-                    sb.Append(plainString[jj]);
+                    sb.Append(inputString[jj]);
                 }
                 firstClusterOfInterest.ResetToInitState();
                 secondClusterOfInterest.ResetToInitState();
@@ -168,12 +182,12 @@ namespace InScrutable.Obscurers
         #region IArgot Implementation
         string IArgot.Obscure(string plainString)
         {
-            return Parse(plainString);
+            return SwapPhoneticClustersInternal(plainString);
         }
 
         string IArgot.Reveal(string obscuredString)
         {
-            return Parse(obscuredString);
+            return SwapPhoneticClustersInternal(obscuredString);
         }
         #endregion
     }

@@ -4,19 +4,40 @@ using System.Text;
 
 namespace InScrutable.Helpers
 {
+    /// <summary>
+    /// A (sub) string cluster
+    /// </summary>
     internal struct ClusterMarker
     {
         private const int UnInitializedIndex = -1;
 
+        /// <summary>
+        /// <para>Start index (position) of the cluster - within the original string</para>
+        /// NOTE:  Indices are 0-Based
+        /// </summary>
         internal int ClusterStartIndex { get; private set; }
 
+        /// <summary>
+        /// <para>End index (position) of the cluster - within the original string</para>
+        /// NOTE:  Indices are 0-Based
+        /// </summary>
         internal int ClusterEndIndex { get; private set; }
 
+        /// <summary>
+        /// <para>Flag indicating initialization state of this <see cref="ClusterMarker" /></para>
+        /// See <see cref="ResetToInitState" /> to reset this <see cref="ClusterMarker" />
+        /// </summary>
         internal bool IsInitialized { get; private set; }
 
 #if DEBUG
+        /// <summary>
+        /// <para>[DebugOnly]:  Original string from which this <see cref="ClusterMarker" /> indices are extracted</para>
+        /// </summary>
         internal readonly string OriginalCompleteString;
 
+        /// <summary>
+        /// <para>[DebugOnly]:  SubString extracted from the original, based on indices in this <see cref="ClusterMarker" /></para>
+        /// </summary>
         internal string SubStringCluster { get; private set; }
 #endif
 
@@ -37,6 +58,9 @@ namespace InScrutable.Helpers
         }
 #endif
 
+        /// <summary>
+        /// Reset this <see cref="ClusterMarker" /> to UnInitialized state
+        /// </summary>
         internal void ResetToInitState()
         {
             ClusterStartIndex = ClusterEndIndex = UnInitializedIndex;
@@ -46,6 +70,11 @@ namespace InScrutable.Helpers
 #endif
         }
 
+        /// <summary>
+        /// Assign start & end indices to this <see cref="ClusterMarker" />
+        /// </summary>
+        /// <param name="clusterStart">Start index of the SubString</param>
+        /// <param name="clusterEnd">End index of the SubString</param>
         internal void Assign(int clusterStart, int clusterEnd)
         {
             ClusterStartIndex = clusterStart;
