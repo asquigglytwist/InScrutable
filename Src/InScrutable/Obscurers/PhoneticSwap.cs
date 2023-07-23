@@ -57,7 +57,7 @@ namespace InScrutable.Obscurers
         {
             scramblerState = PhoneticSwapInternalState.Append;
             Debug.WriteLine($"SwapVowels = {swapVowels}");
-            charInterestChecker = swapVowels ? Extensions.IsVowelOrY : Extensions.IsNotVowelOrY;
+            charInterestChecker = swapVowels ? Extensions.DoesCharSoundAsAVowel : Extensions.IsNotVowelOrY;
         }
 
         /// <summary>
