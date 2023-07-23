@@ -6,7 +6,7 @@ namespace InScrutable.Test
     [TestClass]
     public class ArgotTests
     {
-        static void PhoneticSwap_TestList((string inputPlain, string outputVowelMode, string outputConsonantMode)[] testCombos)
+        static void Helper_Argot_TestInputList((string inputPlain, string outputVowelMode, string outputConsonantMode)[] testCombos)
         {
             foreach (var scramblerTestCombo in testCombos)
             {
@@ -46,7 +46,7 @@ namespace InScrutable.Test
                 ("Yy", "Yy", "Yy"),
                 ("BbC", "BbC", "BbC")
             };
-            PhoneticSwap_TestList(testCombos_RemainUnchanged_Short);
+            Helper_Argot_TestInputList(testCombos_RemainUnchanged_Short);
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace InScrutable.Test
                 ("AEIOUYaeiouy", "AEIOUYaeiouy", "AEIOUYaeiouy"),
                 ("aBCDFGHJKLMNPQRSTVWXZ", "aBCDFGHJKLMNPQRSTVWXZ", "aBCDFGHJKLMNPQRSTVWXZ"),
             };
-            PhoneticSwap_TestList(testCombos_RemainUnchanged_Long);
+            Helper_Argot_TestInputList(testCombos_RemainUnchanged_Long);
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace InScrutable.Test
                 ("Abecdfiogh", "ebAcdfiogh", "Acdfebiogh"),
                 ("AebcdifOgh", "ibcdAefOgh", "AefibcdOgh")
             };
-            PhoneticSwap_TestList(testCombos_TwoVowelClusters);
+            Helper_Argot_TestInputList(testCombos_TwoVowelClusters);
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace InScrutable.Test
                 ("CaTch", "CaTch", "TchaC"),
                 ("ChaRt", "ChaRt", "RtaCh")
             };
-            PhoneticSwap_TestList(testCombos_TwoConsonantClusters);
+            Helper_Argot_TestInputList(testCombos_TwoConsonantClusters);
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace InScrutable.Test
             (string, string, string)[] testCombos_LongerVowelClusters = new[] {
                 ("AebcdifOghuyujklm", "ibcdAefuyughOjklm", "AefibcdOjklmuyugh")
             };
-            PhoneticSwap_TestList(testCombos_LongerVowelClusters);
+            Helper_Argot_TestInputList(testCombos_LongerVowelClusters);
         }
     }
 }
