@@ -17,8 +17,8 @@ namespace InScrutable
         /// <returns>True, if Vowel or Y; False otherwise</returns>
         internal static bool IsVowelOrY(this char alphabet)
         {
-            var alphabetInUpperCase = char.ToUpper(alphabet, System.Globalization.CultureInfo.InvariantCulture);
-            return Global.Constants.KnownVowels.Any(vowel => vowel == alphabetInUpperCase);
+            // var alphabetInUpperCase = char.ToUpper(alphabet, System.Globalization.CultureInfo.InvariantCulture);
+            return Global.Constants.VowelSounds.Any(vowel => vowel == alphabet);
         }
 
         /// <summary>
