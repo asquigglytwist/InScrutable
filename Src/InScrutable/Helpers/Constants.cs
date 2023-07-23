@@ -12,11 +12,13 @@ namespace InScrutable.Global
     internal static class Constants
     {
         /// <summary>
-        /// List (Set) of vowels from alphabets of (mutiple) language(s)
+        /// <para>List (Set) of vowels from alphabets of (mutiple) language(s)</para>
+        /// NOTE:  This collection includes the alphabets that are classified as vowels and also those sound as one
         /// </summary>
-        internal static ImmutableHashSet<char> KnownVowels = ImmutableHashSet.Create(
+        internal static ImmutableHashSet<char> VowelSounds = ImmutableHashSet.Create(
             // EN
             'A', 'E', 'I', 'O', 'U', 'Y'
+            , 'a', 'e', 'i', 'o', 'u', 'y'
 
             // Indic Langs
             // TA (Independent)
@@ -30,9 +32,11 @@ namespace InScrutable.Global
 
             // EU Langs
             // GE
+            , 'Ä', 'Ö', 'Ü'
             , 'ä', 'ö', 'ü'
             // FR
-            , 'â', 'à', 'è', 'ê', 'û', 'î'
+            , 'Â', 'À', 'È', 'É', 'Ê', 'Ë', 'Î', 'Ô', 'Ù', 'Û', 'Ü'
+            , 'â', 'à', 'è', 'é', 'ê', 'ë', 'î', 'ô', 'ù', 'û', 'ü'
             );
     }
 }
