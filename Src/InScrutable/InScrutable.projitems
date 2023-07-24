@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Obscurers\IArgot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Obscurers\SmartRev.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Obscurers\PhoneticSwap.cs" />
   </ItemGroup>
 </Project>
