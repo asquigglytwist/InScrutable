@@ -1,4 +1,5 @@
-﻿using InScrutable.Helpers;
+﻿using InScrutable.Global;
+using InScrutable.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,13 +13,29 @@ namespace InScrutable.Obscurers
     /// </summary>
     internal class SmartRev : IArgot
     {
+        StringBuilder? sb;
+
         internal SmartRev()
         {
         }
 
         protected string SmartReverseInternal(string inputString)
         {
-            return inputString;
+            sb = new StringBuilder(inputString.Length);
+            var wordsInString = inputString.Split(Constants.SingleSpace);
+            foreach (var word in wordsInString)
+            {
+                var wordAsCharArray = word.ToCharArray();
+                Array.Reverse(wordAsCharArray);
+                sb.Append(wordAsCharArray).Append(Constants.SingleSpace);
+                Debug.WriteLine($"Word:  {word}\tReverse:  {wordAsCharArray}");
+            }
+            if (sb.Length > 0)
+            {
+                sb.Remove(sb.Length - 1, 1);
+            }
+            Debug.WriteLine($"After reversal as intended:  {sb}");
+            return sb.ToString();
         }
 
         #region IArgot Implementation
