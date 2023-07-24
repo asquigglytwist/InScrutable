@@ -97,8 +97,8 @@ namespace InScrutable.Test
         public void SmartRevTest()
         {
             var xyz = new[] {
-                ("This is a string", "")
-                , ("This is a test", "")
+                ("This is a string", "sihT si a gnirts")
+                , ("This is a test", "sihT si a tset")
             };
             IArgot srObj = new SmartRev();
             foreach (var (input, expected) in xyz)
