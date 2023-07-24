@@ -11,7 +11,7 @@ namespace InScrutable
     {
         /// <summary>
         /// Checks if given char <paramref name="alphabet" /> is a Vowel (or Y) - Case insensitive & Culture invariant
-        /// See <seealso cref="IsNotVowelOrY(char)" /> for the inverse of this check
+        /// See <seealso cref="DoesCharSoundAsAConsonant(char)" /> for the inverse of this check
         /// </summary>
         /// <param name="alphabet">Char to be checked</param>
         /// <returns>True, if Vowel or Y; False otherwise</returns>
@@ -27,7 +27,7 @@ namespace InScrutable
         /// </summary>
         /// <param name="alphabet">Char to be checked</param>
         /// <returns>True, if NOT a Vowel or Y; False otherwise</returns>
-        internal static bool IsNotVowelOrY(this char alphabet)
+        internal static bool DoesCharSoundAsAConsonant(this char alphabet)
         {
             return !alphabet.DoesCharSoundAsAVowel();
         }

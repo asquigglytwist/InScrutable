@@ -4,9 +4,9 @@ using System.Diagnostics;
 namespace InScrutable.Test
 {
     [TestClass]
-    public class ArgotTests
+    public class PhoneticSwapTests
     {
-        static void Helper_Argot_TestInputList((string inputPlain, string outputVowelMode, string outputConsonantMode)[] testCombos)
+        static void TestHelper_PhoneticSwap_HandleInputList((string inputPlain, string outputVowelMode, string outputConsonantMode)[] testCombos)
         {
             foreach (var scramblerTestCombo in testCombos)
             {
@@ -46,7 +46,7 @@ namespace InScrutable.Test
                 ("Yy", "Yy", "Yy"),
                 ("BbC", "BbC", "BbC")
             };
-            Helper_Argot_TestInputList(testCombos_RemainUnchanged_Short);
+            TestHelper_PhoneticSwap_HandleInputList(testCombos_RemainUnchanged_Short);
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace InScrutable.Test
                 ("AEIOUYaeiouy", "AEIOUYaeiouy", "AEIOUYaeiouy"),
                 ("aBCDFGHJKLMNPQRSTVWXZ", "aBCDFGHJKLMNPQRSTVWXZ", "aBCDFGHJKLMNPQRSTVWXZ"),
             };
-            Helper_Argot_TestInputList(testCombos_RemainUnchanged_Long);
+            TestHelper_PhoneticSwap_HandleInputList(testCombos_RemainUnchanged_Long);
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace InScrutable.Test
                 ("Abecdfiogh", "ebAcdfiogh", "Acdfebiogh"),
                 ("AebcdifOgh", "ibcdAefOgh", "AefibcdOgh")
             };
-            Helper_Argot_TestInputList(testCombos_TwoVowelClusters);
+            TestHelper_PhoneticSwap_HandleInputList(testCombos_TwoVowelClusters);
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace InScrutable.Test
                 ("CaTch", "CaTch", "TchaC"),
                 ("ChaRt", "ChaRt", "RtaCh")
             };
-            Helper_Argot_TestInputList(testCombos_TwoConsonantClusters);
+            TestHelper_PhoneticSwap_HandleInputList(testCombos_TwoConsonantClusters);
         }
 
         [TestMethod]
@@ -86,7 +86,26 @@ namespace InScrutable.Test
             (string, string, string)[] testCombos_LongerVowelClusters = new[] {
                 ("AebcdifOghuyujklm", "ibcdAefuyughOjklm", "AefibcdOjklmuyugh")
             };
-            Helper_Argot_TestInputList(testCombos_LongerVowelClusters);
+            TestHelper_PhoneticSwap_HandleInputList(testCombos_LongerVowelClusters);
+        }
+    }
+
+    [TestClass]
+    public class SmartRevTests
+    {
+        [TestMethod]
+        public void SmartRevTest()
+        {
+            var xyz = new[] {
+                ("This is a string", "sihT si a gnirts")
+                , ("This is a test", "sihT si a tset")
+            };
+            IArgot srObj = new SmartRev();
+            foreach (var (input, expected) in xyz)
+            {
+                var actuals = srObj.Obscure(input);
+                Assert.AreEqual(expected, actuals);
+            }
         }
     }
 }

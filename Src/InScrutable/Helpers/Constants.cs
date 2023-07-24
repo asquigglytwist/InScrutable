@@ -11,6 +11,7 @@ namespace InScrutable.Global
     /// </summary>
     internal static class Constants
     {
+        internal static char SingleSpace = ' ';
         /// <summary>
         /// <para>List (Set) of vowels from alphabets of (mutiple) language(s)</para>
         /// NOTE:  This collection includes the alphabets that are classified as vowels and also those sound as one
