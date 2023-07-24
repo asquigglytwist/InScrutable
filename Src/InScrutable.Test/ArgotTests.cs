@@ -89,4 +89,23 @@ namespace InScrutable.Test
             TestHelper_PhoneticSwap_HandleInputList(testCombos_LongerVowelClusters);
         }
     }
+
+    [TestClass]
+    public class SmartRevTests
+    {
+        [TestMethod]
+        public void SmartRevTest()
+        {
+            var xyz = new[] {
+                ("This is a string", "")
+                , ("This is a test", "")
+            };
+            IArgot srObj = new SmartRev();
+            foreach (var (input, expected) in xyz)
+            {
+                var actuals = srObj.Obscure(input);
+                Assert.AreEqual(expected, actuals);
+            }
+        }
+    }
 }
