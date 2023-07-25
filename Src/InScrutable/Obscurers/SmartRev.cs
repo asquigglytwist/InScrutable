@@ -38,6 +38,54 @@ namespace InScrutable.Obscurers
             return sb.ToString();
         }
 
+        protected string SmartReverseInternal_Alt(string inputString)
+        {
+            ClusterHandlerInternalState reverserState = ClusterHandlerInternalState.Append;
+            sb = new StringBuilder(inputString.Length);
+            ClusterMarker cmIdentifiedWord = new(
+#if DEBUG
+inputString
+#else
+#endif
+);
+            var asCharArray = inputString.ToCharArray();
+            var wordStartIndex = -1;
+            Debug.WriteLine($"Input:  {inputString}\tLength:  {inputString.Length}\tArrayLength:  {asCharArray.Length}");
+            for (var iiArrayIndex = 0; iiArrayIndex < asCharArray.Length; iiArrayIndex++)
+            {
+                var charInString = asCharArray[iiArrayIndex];
+                Debug.WriteLine($"Current char:  {charInString}");
+                if (char.IsLetterOrDigit(charInString))
+                {
+                    Debug.WriteLine("Current char is LetterOrDigit");
+                    switch (reverserState)
+                    {
+                        case ClusterHandlerInternalState.Append:
+                            reverserState = ClusterHandlerInternalState.GenericClusterStart;
+                            wordStartIndex = iiArrayIndex;
+                            break;
+                        case ClusterHandlerInternalState.GenericClusterStart:
+                            reverserState = ClusterHandlerInternalState.GenericClusterEnd;
+                            for (int iiClusterIndex = cmIdentifiedWord.ClusterStartIndex; iiClusterIndex <= cmIdentifiedWord.ClusterEndIndex; iiClusterIndex++)
+                            {
+                            }
+                            break;
+                        case ClusterHandlerInternalState.GenericClusterEnd:
+                        case ClusterHandlerInternalState.SecondClusterStart:
+                        case ClusterHandlerInternalState.SecondClusterEnd:
+                        default:
+                            throw new Exception($"Unexpected internal state:  {reverserState}");
+                    }
+                }
+            }
+            if (sb.Length > 0)
+            {
+                sb.Remove(sb.Length - 1, 1);
+            }
+            Debug.WriteLine($"After reversal as intended:  {sb}");
+            return sb.ToString();
+        }
+
         #region IArgot Implementation
         string IArgot.Obscure(string plainString)
         {
