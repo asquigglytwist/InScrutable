@@ -8,7 +8,7 @@ namespace InScrutable.Helpers
     /// <para>Possible internal states of the <see cref="PhoneticSwap"/> variant of <see cref="IArgot"/></para>
     /// [DevRef]:  <see cref="PhoneticSwap" /> internally functions as a finite state machine - where state dictates the reaction to continuous parsing
     /// </summary>
-    internal enum PhoneticSwapInternalState
+    internal enum ClusterHandlerInternalState
     {
         /// <summary>
         /// Parser in "Append" mode where the inflow is directly appended to the final output

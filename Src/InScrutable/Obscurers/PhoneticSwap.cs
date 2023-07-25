@@ -20,13 +20,13 @@ namespace InScrutable.Obscurers
         public delegate bool CheckCharInterest(char charOfInterest);
 
         private readonly CheckCharInterest charInterestChecker;
-        PhoneticSwapInternalState scramblerState;
+        ClusterHandlerInternalState scramblerState;
         StringBuilder? sb;
         ClusterMarker firstClusterOfInterest, secondClusterOfInterest;
 
         internal PhoneticSwap(bool swapVowels = true)
         {
-            scramblerState = PhoneticSwapInternalState.Append;
+            scramblerState = ClusterHandlerInternalState.Append;
             Debug.WriteLine($"SwapVowels = {swapVowels}");
             charInterestChecker = swapVowels ? Extensions.DoesCharSoundAsAVowel : Extensions.DoesCharSoundAsAConsonant;
         }
@@ -57,17 +57,17 @@ namespace InScrutable.Obscurers
                 {
                     switch (scramblerState)
                     {
-                        case PhoneticSwapInternalState.Append:
+                        case ClusterHandlerInternalState.Append:
                             sb.Append(chCurrentChar);
                             Debug.WriteLine("Appending char:  {0}", chCurrentChar);
                             break;
-                        case PhoneticSwapInternalState.FirstClusterStart:
-                            scramblerState = PhoneticSwapInternalState.FirstClusterEnd;
+                        case ClusterHandlerInternalState.FirstClusterStart:
+                            scramblerState = ClusterHandlerInternalState.FirstClusterEnd;
                             firstClusterOfInterest.Assign(ixClusterOfInterestStart, iiCurrentIndex - 1);
                             Debug.WriteLine("(First) Cluster marked:  {0}-{1}",
                                 firstClusterOfInterest.ClusterStartIndex, firstClusterOfInterest.ClusterEndIndex);
                             break;
-                        case PhoneticSwapInternalState.SecondClusterStart:
+                        case ClusterHandlerInternalState.SecondClusterStart:
                             secondClusterOfInterest.Assign(ixClusterOfInterestStart, iiCurrentIndex - 1);
                             Debug.WriteLine("(Second) Cluster marked:  {0}-{1}",
                                 secondClusterOfInterest.ClusterStartIndex, secondClusterOfInterest.ClusterEndIndex);
@@ -75,8 +75,8 @@ namespace InScrutable.Obscurers
                             sb.Append(chCurrentChar);
                             Debug.WriteLine($"After appending current char:  {sb}");
                             break;
-                        case PhoneticSwapInternalState.FirstClusterEnd:
-                        case PhoneticSwapInternalState.SecondClusterEnd:
+                        case ClusterHandlerInternalState.FirstClusterEnd:
+                        case ClusterHandlerInternalState.SecondClusterEnd:
                         default:
                             break;
                     }
@@ -85,30 +85,30 @@ namespace InScrutable.Obscurers
                 {
                     switch (scramblerState)
                     {
-                        case PhoneticSwapInternalState.Append:
-                            scramblerState = PhoneticSwapInternalState.FirstClusterStart;
+                        case ClusterHandlerInternalState.Append:
+                            scramblerState = ClusterHandlerInternalState.FirstClusterStart;
                             ixClusterOfInterestStart = iiCurrentIndex;
                             Debug.WriteLine($"Detected (First) char of interst {chCurrentChar} at {ixClusterOfInterestStart}");
                             break;
-                        case PhoneticSwapInternalState.FirstClusterEnd:
-                            scramblerState = PhoneticSwapInternalState.SecondClusterStart;
+                        case ClusterHandlerInternalState.FirstClusterEnd:
+                            scramblerState = ClusterHandlerInternalState.SecondClusterStart;
                             ixClusterOfInterestStart = iiCurrentIndex;
                             Debug.WriteLine($"Detected (Second) char of interst {chCurrentChar} at {ixClusterOfInterestStart}");
                             break;
-                        case PhoneticSwapInternalState.FirstClusterStart:
-                        case PhoneticSwapInternalState.SecondClusterStart:
+                        case ClusterHandlerInternalState.FirstClusterStart:
+                        case ClusterHandlerInternalState.SecondClusterStart:
                         default:
                             break;
                     }
                 }
             }
-            if (scramblerState == PhoneticSwapInternalState.SecondClusterStart)
+            if (scramblerState == ClusterHandlerInternalState.SecondClusterStart)
             {
                 secondClusterOfInterest.Assign(ixClusterOfInterestStart, inputString.Length - 1);
                 HandleMarkedClusters(inputString);
             }
             int residuesStartIndex = (firstClusterOfInterest.IsInitialized ? firstClusterOfInterest.ClusterStartIndex :
-                (scramblerState != PhoneticSwapInternalState.Append ? ixClusterOfInterestStart : -1));
+                (scramblerState != ClusterHandlerInternalState.Append ? ixClusterOfInterestStart : -1));
             if (residuesStartIndex > -1)
             {
                 Debug.WriteLine("Residues detected; Appending, for completeness");
@@ -145,7 +145,7 @@ namespace InScrutable.Obscurers
                 }
                 firstClusterOfInterest.ResetToInitState();
                 secondClusterOfInterest.ResetToInitState();
-                scramblerState = PhoneticSwapInternalState.Append;
+                scramblerState = ClusterHandlerInternalState.Append;
                 Debug.WriteLine($"After appending the two cluster:  {sb}");
             }
         }

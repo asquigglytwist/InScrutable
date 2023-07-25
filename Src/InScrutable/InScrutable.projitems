@@ -12,7 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ClusterMarker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Extensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\PhoneticSwapInternalState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ClusterHandlerInternalState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Obscurers\IArgot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Obscurers\SmartRev.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Obscurers\PhoneticSwap.cs" />
