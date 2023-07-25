@@ -40,47 +40,28 @@ namespace InScrutable.Obscurers
 
         protected string SmartReverseInternal_Alt(string inputString)
         {
-            ClusterHandlerInternalState reverserState = ClusterHandlerInternalState.Append;
             sb = new StringBuilder(inputString.Length);
-            ClusterMarker cmIdentifiedWord = new(
-#if DEBUG
-inputString
-#else
-#endif
-);
+            ClusterMarker cmIdentifiedWord = new(inputString);
             var asCharArray = inputString.ToCharArray();
-            var wordStartIndex = -1;
+            var wordStartIndex = 0;
             Debug.WriteLine($"Input:  {inputString}\tLength:  {inputString.Length}\tArrayLength:  {asCharArray.Length}");
             for (var iiArrayIndex = 0; iiArrayIndex < asCharArray.Length; iiArrayIndex++)
             {
                 var charInString = asCharArray[iiArrayIndex];
                 Debug.WriteLine($"Current char:  {charInString}");
-                if (char.IsLetterOrDigit(charInString))
+                if (!char.IsLetterOrDigit(charInString))
                 {
-                    Debug.WriteLine("Current char is LetterOrDigit");
-                    switch (reverserState)
+                    for (int iiClusterIndex = iiArrayIndex - 1; iiClusterIndex >= wordStartIndex; iiClusterIndex--)
                     {
-                        case ClusterHandlerInternalState.Append:
-                            reverserState = ClusterHandlerInternalState.GenericClusterStart;
-                            wordStartIndex = iiArrayIndex;
-                            break;
-                        case ClusterHandlerInternalState.GenericClusterStart:
-                            reverserState = ClusterHandlerInternalState.GenericClusterEnd;
-                            for (int iiClusterIndex = cmIdentifiedWord.ClusterStartIndex; iiClusterIndex <= cmIdentifiedWord.ClusterEndIndex; iiClusterIndex++)
-                            {
-                            }
-                            break;
-                        case ClusterHandlerInternalState.GenericClusterEnd:
-                        case ClusterHandlerInternalState.SecondClusterStart:
-                        case ClusterHandlerInternalState.SecondClusterEnd:
-                        default:
-                            throw new Exception($"Unexpected internal state:  {reverserState}");
+                        sb.Append(asCharArray[iiClusterIndex]);
                     }
+                    sb.Append(charInString);
+                    wordStartIndex = iiArrayIndex + 1;
                 }
             }
-            if (sb.Length > 0)
+            for (int iiClusterIndex = asCharArray.Length - 1; iiClusterIndex >= wordStartIndex; iiClusterIndex--)
             {
-                sb.Remove(sb.Length - 1, 1);
+                sb.Append(asCharArray[iiClusterIndex]);
             }
             Debug.WriteLine($"After reversal as intended:  {sb}");
             return sb.ToString();
@@ -89,7 +70,7 @@ inputString
         #region IArgot Implementation
         string IArgot.Obscure(string plainString)
         {
-            return SmartReverseInternal(plainString);
+            return SmartReverseInternal_Alt(plainString);
         }
 
         string IArgot.Reveal(string obscuredString)
