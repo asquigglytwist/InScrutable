@@ -29,34 +29,24 @@ namespace InScrutable.Helpers
         /// </summary>
         internal bool IsInitialized { get; private set; }
 
-#if DEBUG
         /// <summary>
         /// <para>[DebugOnly]:  Original string from which this <see cref="ClusterMarker" /> indices are extracted</para>
         /// </summary>
         internal readonly string OriginalCompleteString;
 
+#if DEBUG
         /// <summary>
         /// <para>[DebugOnly]:  SubString extracted from the original, based on indices in this <see cref="ClusterMarker" /></para>
         /// </summary>
         internal string SubStringCluster { get; private set; }
 #endif
 
-        public ClusterMarker()
-#if DEBUG
-        : this(string.Empty)
-#endif
-        {
-            ResetToInitState();
-        }
-
-#if DEBUG
         internal ClusterMarker(string original)
         {
             ResetToInitState();
             OriginalCompleteString = original;
             SubStringCluster = original;
         }
-#endif
 
         /// <summary>
         /// Reset this <see cref="ClusterMarker" /> to UnInitialized state

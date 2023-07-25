@@ -41,13 +41,8 @@ namespace InScrutable.Obscurers
             int ixClusterOfInterestStart = 0;
             Debug.WriteLine($"Input:  {inputString}");
             sb = new(inputString.Length);
-#if DEBUG
             firstClusterOfInterest = new(inputString);
             secondClusterOfInterest = new(inputString);
-#else
-            firstClusterOfInterest = new();
-            secondClusterOfInterest = new();
-#endif
             for (int iiCurrentIndex = 0; iiCurrentIndex < inputString.Length; iiCurrentIndex++)
             {
                 var chCurrentChar = inputString[iiCurrentIndex];
