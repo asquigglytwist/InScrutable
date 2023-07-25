@@ -38,10 +38,39 @@ namespace InScrutable.Obscurers
             return sb.ToString();
         }
 
+        protected string SmartReverseInternal_Alt(string inputString)
+        {
+            sb = new StringBuilder(inputString.Length);
+            ClusterMarker cmIdentifiedWord = new(inputString);
+            var asCharArray = inputString.ToCharArray();
+            var wordStartIndex = 0;
+            Debug.WriteLine($"Input:  {inputString}\tLength:  {inputString.Length}\tArrayLength:  {asCharArray.Length}");
+            for (var iiArrayIndex = 0; iiArrayIndex < asCharArray.Length; iiArrayIndex++)
+            {
+                var charInString = asCharArray[iiArrayIndex];
+                Debug.WriteLine($"Current char:  {charInString}");
+                if (!char.IsLetterOrDigit(charInString))
+                {
+                    for (int iiClusterIndex = iiArrayIndex - 1; iiClusterIndex >= wordStartIndex; iiClusterIndex--)
+                    {
+                        sb.Append(asCharArray[iiClusterIndex]);
+                    }
+                    sb.Append(charInString);
+                    wordStartIndex = iiArrayIndex + 1;
+                }
+            }
+            for (int iiClusterIndex = asCharArray.Length - 1; iiClusterIndex >= wordStartIndex; iiClusterIndex--)
+            {
+                sb.Append(asCharArray[iiClusterIndex]);
+            }
+            Debug.WriteLine($"After reversal as intended:  {sb}");
+            return sb.ToString();
+        }
+
         #region IArgot Implementation
         string IArgot.Obscure(string plainString)
         {
-            return SmartReverseInternal(plainString);
+            return SmartReverseInternal_Alt(plainString);
         }
 
         string IArgot.Reveal(string obscuredString)
