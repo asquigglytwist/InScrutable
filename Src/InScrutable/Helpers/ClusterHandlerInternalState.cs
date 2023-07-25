@@ -18,10 +18,12 @@ namespace InScrutable.Helpers
         /// Discovered / encountered the "First" cluster that matches the "Phonetic" criteria
         /// </summary>
         FirstClusterStart,
+        GenericClusterStart = FirstClusterStart,
         /// <summary>
         /// "First" cluster of interest has been completed
         /// </summary>
         FirstClusterEnd,
+        GenericClusterEnd = FirstClusterEnd,
         /// <summary>
         /// Discovered / encountered the "Second" cluster that matches the "Phonetic" criteria
         /// </summary>
