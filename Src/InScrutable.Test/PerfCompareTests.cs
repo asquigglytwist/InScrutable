@@ -28,8 +28,6 @@ namespace InScrutable.Test
         [TestMethod]
         public static void RunTests()
         {
-            // See https://aka.ms/new-console-template for more information
-            Console.WriteLine("Hello, World!");
             const string kTimerNormal = "Normal";
             const string kTimerAlt = "Alt";
             TimeKeeper.StartTimer(kTimerNormal);
