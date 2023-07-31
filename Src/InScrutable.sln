@@ -5,7 +5,9 @@ VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "InScrutable", "InScrutable\InScrutable.shproj", "{75E793CE-4E35-4BC7-8C47-7F4DF4216764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InScrutable.Test", "InScrutable.Test\InScrutable.Test.csproj", "{2264690C-3F60-460A-9835-846EE51FAC21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InScrutable.Test", "InScrutable.Test\InScrutable.Test.csproj", "{2264690C-3F60-460A-9835-846EE51FAC21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InScrutable.CLI", "InScrutable.CLI\InScrutable.CLI.csproj", "{F35C5204-2E2A-49E5-AFFD-4E3AE6BB35BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,10 @@ Global
 		{2264690C-3F60-460A-9835-846EE51FAC21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2264690C-3F60-460A-9835-846EE51FAC21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2264690C-3F60-460A-9835-846EE51FAC21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F35C5204-2E2A-49E5-AFFD-4E3AE6BB35BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F35C5204-2E2A-49E5-AFFD-4E3AE6BB35BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F35C5204-2E2A-49E5-AFFD-4E3AE6BB35BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F35C5204-2E2A-49E5-AFFD-4E3AE6BB35BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -27,5 +33,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		InScrutable\InScrutable.projitems*{2264690c-3f60-460a-9835-846ee51fac21}*SharedItemsImports = 5
 		InScrutable\InScrutable.projitems*{75e793ce-4e35-4bc7-8c47-7f4df4216764}*SharedItemsImports = 13
+		InScrutable\InScrutable.projitems*{f35c5204-2e2a-49e5-affd-4e3ae6bb35ba}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal
