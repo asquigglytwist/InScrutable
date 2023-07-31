@@ -45,7 +45,9 @@ namespace InScrutable.Helpers
         {
             ResetToInitState();
             OriginalCompleteString = original;
+#if DEBUG
             SubStringCluster = original;
+#endif
         }
 
         /// <summary>

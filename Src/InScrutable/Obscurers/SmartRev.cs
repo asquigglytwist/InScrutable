@@ -41,7 +41,6 @@ namespace InScrutable.Obscurers
         protected string SmartReverseInternal_Alt(string inputString)
         {
             sb = new StringBuilder(inputString.Length);
-            ClusterMarker cmIdentifiedWord = new(inputString);
             var asCharArray = inputString.ToCharArray();
             var wordStartIndex = 0;
             Debug.WriteLine($"Input:  {inputString}\tLength:  {inputString.Length}\tArrayLength:  {asCharArray.Length}");
@@ -51,6 +50,7 @@ namespace InScrutable.Obscurers
                 Debug.WriteLine($"Current char:  {charInString}");
                 if (!char.IsLetterOrDigit(charInString))
                 {
+                    Debug.WriteLine("Char is not a letter or digit; Treating as word-break and proceeding with appending in reverse");
                     for (int iiClusterIndex = iiArrayIndex - 1; iiClusterIndex >= wordStartIndex; iiClusterIndex--)
                     {
                         sb.Append(asCharArray[iiClusterIndex]);
@@ -61,6 +61,7 @@ namespace InScrutable.Obscurers
             }
             for (int iiClusterIndex = asCharArray.Length - 1; iiClusterIndex >= wordStartIndex; iiClusterIndex--)
             {
+                Debug.WriteLine($"Appending:  {asCharArray[iiClusterIndex]}");
                 sb.Append(asCharArray[iiClusterIndex]);
             }
             Debug.WriteLine($"After reversal as intended:  {sb}");

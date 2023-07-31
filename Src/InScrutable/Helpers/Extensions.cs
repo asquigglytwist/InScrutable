@@ -9,6 +9,7 @@ namespace InScrutable
     /// </summary>
     internal static class Extensions
     {
+        #region Lexical Helpers
         /// <summary>
         /// Checks if given char <paramref name="alphabet" /> is a Vowel (or Y) - Case insensitive & Culture invariant
         /// See <seealso cref="DoesCharSoundAsAConsonant(char)" /> for the inverse of this check
@@ -31,5 +32,10 @@ namespace InScrutable
         {
             return !alphabet.DoesCharSoundAsAVowel();
         }
+        #endregion
+
+        #region Numeric Helpers
+        internal static decimal AsDecimal(this long valueInLong) => valueInLong;
+        #endregion
     }
 }

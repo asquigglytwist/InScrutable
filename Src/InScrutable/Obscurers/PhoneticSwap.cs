@@ -141,7 +141,7 @@ namespace InScrutable.Obscurers
                 firstClusterOfInterest.ResetToInitState();
                 secondClusterOfInterest.ResetToInitState();
                 scramblerState = ClusterHandlerInternalState.Append;
-                Debug.WriteLine($"After appending the two cluster:  {sb}");
+                Debug.WriteLine($"After appending the two clusters:  {sb}");
             }
         }
 
