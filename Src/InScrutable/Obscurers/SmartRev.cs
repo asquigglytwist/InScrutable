@@ -19,7 +19,7 @@ namespace InScrutable.Obscurers
         {
         }
 
-        protected string SmartReverseInternal(string inputString)
+        internal string SmartReverseInternal(string inputString)
         {
             sb = new StringBuilder(inputString.Length);
             var wordsInString = inputString.Split(Constants.SingleSpace);
@@ -38,7 +38,7 @@ namespace InScrutable.Obscurers
             return sb.ToString();
         }
 
-        protected string SmartReverseInternal_Alt(string inputString)
+        internal string SmartReverseInternal_Alt(string inputString)
         {
             sb = new StringBuilder(inputString.Length);
             var asCharArray = inputString.ToCharArray();
