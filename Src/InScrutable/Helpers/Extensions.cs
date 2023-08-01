@@ -37,11 +37,12 @@ namespace InScrutable
         #region Numeric Helpers
         /// <summary>
         /// <para>Converts the given <see cref="long" /> value as a <see cref="decimal" /> by an implicit cast</para>
-        /// NOTE:  The effective numerical value does not change
-        /// <example><value>1</value> becomes <value>1.0</value></example>
         /// </summary>
         /// <param name="valueInLong">The (input) value of type <see cref="long" /></param>
         /// <returns><see cref="decimal" /> form of the input <see cref="long" /></returns>
+        /// <remarks>The effective numerical value does not change
+        /// <example>For eg: <value>1</value> becomes <value>1.0</value></example>
+        /// </remarks>
         internal static decimal AsDecimal(this long valueInLong) => valueInLong;
         #endregion
     }
