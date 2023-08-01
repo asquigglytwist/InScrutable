@@ -11,11 +11,15 @@ namespace InScrutable.Global
     /// </summary>
     internal static class Constants
     {
-        internal static char SingleSpace = ' ';
+        internal const int UnInitializedArrayIndex = -1;
+        /// <summary>
+        /// A single space  (Name says it all!!)
+        /// </summary>
+        internal const char SingleSpace = ' ';
         /// <summary>
         /// <para>List (Set) of vowels from alphabets of (mutiple) language(s)</para>
-        /// NOTE:  This collection includes the alphabets that are classified as vowels and also those sound as one
         /// </summary>
+        /// <remarks>This collection includes the alphabets that are classified as vowels and also those sound as one</remarks>
         internal static ImmutableHashSet<char> VowelSounds = ImmutableHashSet.Create(
             // EN
             'A', 'E', 'I', 'O', 'U', 'Y'

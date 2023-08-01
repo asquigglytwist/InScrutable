@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InScrutable.Global;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,18 +10,18 @@ namespace InScrutable.Helpers
     /// </summary>
     internal struct ClusterMarker
     {
-        private const int UnInitializedIndex = -1;
+        private const int UnInitializedClusterIndex = Constants.UnInitializedArrayIndex;
 
         /// <summary>
         /// <para>Start index (position) of the cluster - within the original string</para>
-        /// NOTE:  Indices are 0-Based
         /// </summary>
+        /// <remarks>Indices are 0-Based</remarks>
         internal int ClusterStartIndex { get; private set; }
 
         /// <summary>
         /// <para>End index (position) of the cluster - within the original string</para>
-        /// NOTE:  Indices are 0-Based
         /// </summary>
+        /// <remarks>Indices are 0-Based</remarks>
         internal int ClusterEndIndex { get; private set; }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace InScrutable.Helpers
         /// </summary>
         internal void ResetToInitState()
         {
-            ClusterStartIndex = ClusterEndIndex = UnInitializedIndex;
+            ClusterStartIndex = ClusterEndIndex = UnInitializedClusterIndex;
             IsInitialized = false;
 #if DEBUG
             SubStringCluster = string.Empty;
