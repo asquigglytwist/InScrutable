@@ -7,6 +7,9 @@ using System.Text;
 
 namespace InScrutable.Obscurers
 {
+    /// <summary>
+    /// <para>Argot generation / string mutation by converting to Base64 (UTF-32) Encoding</para>
+    /// </summary>
     internal class U32B64 : IArgot
     {
         #region IArgot Implementation
