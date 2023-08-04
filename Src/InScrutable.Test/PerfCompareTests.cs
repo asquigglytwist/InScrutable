@@ -51,7 +51,7 @@ namespace InScrutable.Test
             }
         }
 
-        private static void SmartReverseTestRepeater(SmartRevTestFunc srFunctor)
+        private static void SmartReverseTestRepeater(SmartRevTestFunc smartRevFunctor)
         {
             for (int iiRepeatCounter = 0; iiRepeatCounter < kIterationsPerRun; iiRepeatCounter++)
             {
@@ -59,7 +59,7 @@ namespace InScrutable.Test
                 SmartRev sr = new();
                 for (int iiTestSetIterator = 0; iiTestSetIterator < testValues.Length; iiTestSetIterator++)
                 {
-                    Console.WriteLine($"Input:  {testValues[iiTestSetIterator]}\tOutput:  {srFunctor(sr, testValues[iiTestSetIterator])}");
+                    Console.WriteLine($"Input:  {testValues[iiTestSetIterator]}\tOutput:  {smartRevFunctor(sr, testValues[iiTestSetIterator])}");
                 }
             }
         }
