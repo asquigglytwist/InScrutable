@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ClusterHandlerInternalState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TimeKeeper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Obscurers\IArgot.cs" />
+    <Compile Include="..\InScrutable\Obscurers\U8B64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Obscurers\SmartRev.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Obscurers\PhoneticSwap.cs" />
   </ItemGroup>
