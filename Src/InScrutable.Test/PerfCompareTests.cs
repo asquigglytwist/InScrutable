@@ -35,10 +35,10 @@ namespace InScrutable.Test
             SmartRevTestFunc normalRoute = (sr, plainText) => sr.SmartReverseInternal(plainText);
             SmartRevTestFunc altRoute = (sr, plainText) => sr.SmartReverseInternal_Alt(plainText);
             TimeKeeper.StartTimer(kTimerNormal);
-            TestNormal();
+            SmartReverseTestRepeater(normalRoute);
             var elapsedNormal = TimeKeeper.StopTimer(kTimerNormal);
             TimeKeeper.StartTimer(kTimerAlt);
-            TestAlt();
+            SmartReverseTestRepeater(altRoute);
             var elapsedAlt = TimeKeeper.StopTimer(kTimerAlt);
             Console.WriteLine($"Elapsed - Normal: {elapsedNormal}\tAlt: {elapsedAlt}");
             if (elapsedNormal < elapsedAlt)
@@ -60,32 +60,6 @@ namespace InScrutable.Test
                 for (int iiTestSetIterator = 0; iiTestSetIterator < testValues.Length; iiTestSetIterator++)
                 {
                     Console.WriteLine($"Input:  {testValues[iiTestSetIterator]}\tOutput:  {srFunctor(sr, testValues[iiTestSetIterator])}");
-                }
-            }
-        }
-
-        private static void TestNormal()
-        {
-            for (int ii = 0; ii < kIterationsPerRun; ii++)
-            {
-                Console.WriteLine($"Iteration:  {ii}");
-                SmartRev sr = new();
-                for (int jj = 0; jj < testValues.Length; jj++)
-                {
-                    Console.WriteLine($"Input:  {testValues[jj]}\tOutput:{sr.SmartReverseInternal(testValues[jj])}");
-                }
-            }
-        }
-
-        private static void TestAlt()
-        {
-            for (int ii = 0; ii < kIterationsPerRun; ii++)
-            {
-                Console.WriteLine($"Iteration:  {ii}");
-                SmartRev sr = new();
-                for (int jj = 0; jj < testValues.Length; jj++)
-                {
-                    Console.WriteLine($"Input:  {testValues[jj]}\tOutput:{sr.SmartReverseInternal_Alt(testValues[jj])}");
                 }
             }
         }
