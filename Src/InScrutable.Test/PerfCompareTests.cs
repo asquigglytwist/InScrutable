@@ -34,12 +34,8 @@ namespace InScrutable.Test
             const string kTimerAlt = "Alt";
             SmartRevTestFunc normalRoute = (sr, plainText) => sr.SmartReverseInternal(plainText);
             SmartRevTestFunc altRoute = (sr, plainText) => sr.SmartReverseInternal_Alt(plainText);
-            TimeKeeper.StartTimer(kTimerNormal);
-            SmartReverseTestRepeater(normalRoute);
-            var elapsedNormal = TimeKeeper.StopTimer(kTimerNormal);
-            TimeKeeper.StartTimer(kTimerAlt);
-            SmartReverseTestRepeater(altRoute);
-            var elapsedAlt = TimeKeeper.StopTimer(kTimerAlt);
+            var elapsedNormal = TestAndMeasure(kTimerNormal, normalRoute);
+            var elapsedAlt = TestAndMeasure(kTimerAlt, altRoute);
             Console.WriteLine($"Elapsed - Normal: {elapsedNormal}\tAlt: {elapsedAlt}");
             if (elapsedNormal < elapsedAlt)
             {
@@ -49,6 +45,13 @@ namespace InScrutable.Test
             {
                 Console.WriteLine($"Alt approach is {elapsedNormal.AsDecimal() / elapsedAlt.AsDecimal()}x faster");
             }
+        }
+
+        private static long TestAndMeasure(string timerName, SmartRevTestFunc smartRevFunctor)
+        {
+            TimeKeeper.StartTimer(timerName);
+            SmartReverseTestRepeater(smartRevFunctor);
+            return TimeKeeper.StopTimer(timerName);
         }
 
         private static void SmartReverseTestRepeater(SmartRevTestFunc smartRevFunctor)
