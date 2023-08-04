@@ -6,12 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using SmartRevTestFunc = System.Func<InScrutable.Obscurers.SmartRev, string, string>;
+
 namespace InScrutable.Test
 {
     [TestClass]
     internal class PerfCompareTests
     {
-        static string[] testValues =
+        static readonly string[] testValues =
         {
             "abcdefghijklmnopqrstuvwxyz"
             , "abcd efgh ijkl mnop qrst uvwx yz"
@@ -30,6 +32,8 @@ namespace InScrutable.Test
         {
             const string kTimerNormal = "Normal";
             const string kTimerAlt = "Alt";
+            SmartRevTestFunc normalRoute = (sr, plainText) => sr.SmartReverseInternal(plainText);
+            SmartRevTestFunc altRoute = (sr, plainText) => sr.SmartReverseInternal_Alt(plainText);
             TimeKeeper.StartTimer(kTimerNormal);
             TestNormal();
             var elapsedNormal = TimeKeeper.StopTimer(kTimerNormal);
