@@ -6,12 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using SmartRevTestFunc = System.Func<InScrutable.Obscurers.SmartRev, string, string>;
+
 namespace InScrutable.Test
 {
     [TestClass]
     internal class PerfCompareTests
     {
-        static string[] testValues =
+        static readonly string[] testValues =
         {
             "abcdefghijklmnopqrstuvwxyz"
             , "abcd efgh ijkl mnop qrst uvwx yz"
@@ -30,11 +32,13 @@ namespace InScrutable.Test
         {
             const string kTimerNormal = "Normal";
             const string kTimerAlt = "Alt";
+            SmartRevTestFunc normalRoute = (sr, plainText) => sr.SmartReverseInternal(plainText);
+            SmartRevTestFunc altRoute = (sr, plainText) => sr.SmartReverseInternal_Alt(plainText);
             TimeKeeper.StartTimer(kTimerNormal);
-            TestNormal();
+            SmartReverseTestRepeater(normalRoute);
             var elapsedNormal = TimeKeeper.StopTimer(kTimerNormal);
             TimeKeeper.StartTimer(kTimerAlt);
-            TestAlt();
+            SmartReverseTestRepeater(altRoute);
             var elapsedAlt = TimeKeeper.StopTimer(kTimerAlt);
             Console.WriteLine($"Elapsed - Normal: {elapsedNormal}\tAlt: {elapsedAlt}");
             if (elapsedNormal < elapsedAlt)
@@ -47,28 +51,15 @@ namespace InScrutable.Test
             }
         }
 
-        private static void TestNormal()
+        private static void SmartReverseTestRepeater(SmartRevTestFunc smartRevFunctor)
         {
-            for (int ii = 0; ii < kIterationsPerRun; ii++)
+            for (int iiRepeatCounter = 0; iiRepeatCounter < kIterationsPerRun; iiRepeatCounter++)
             {
-                Console.WriteLine($"Iteration:  {ii}");
+                Console.WriteLine($"Iteration:  {iiRepeatCounter}");
                 SmartRev sr = new();
-                for (int jj = 0; jj < testValues.Length; jj++)
+                for (int iiTestSetIterator = 0; iiTestSetIterator < testValues.Length; iiTestSetIterator++)
                 {
-                    Console.WriteLine($"Input:  {testValues[jj]}\tOutput:{sr.SmartReverseInternal(testValues[jj])}");
-                }
-            }
-        }
-
-        private static void TestAlt()
-        {
-            for (int ii = 0; ii < kIterationsPerRun; ii++)
-            {
-                Console.WriteLine($"Iteration:  {ii}");
-                SmartRev sr = new();
-                for (int jj = 0; jj < testValues.Length; jj++)
-                {
-                    Console.WriteLine($"Input:  {testValues[jj]}\tOutput:{sr.SmartReverseInternal_Alt(testValues[jj])}");
+                    Console.WriteLine($"Input:  {testValues[iiTestSetIterator]}\tOutput:  {smartRevFunctor(sr, testValues[iiTestSetIterator])}");
                 }
             }
         }
