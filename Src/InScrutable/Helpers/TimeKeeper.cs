@@ -28,12 +28,20 @@ namespace InScrutable.Helpers
         internal static void StartTimer(string timerName)
         {
             var stopWatch = GetTimerFor(timerName);
+            if (stopWatch.IsRunning)
+            {
+                throw new Exception("Timer already running!");
+            }
             stopWatch.Start();
         }
 
         internal static long StopTimer(string timerName)
         {
             var stopWatch = GetTimerFor(timerName);
+            if (!stopWatch.IsRunning)
+            {
+                throw new Exception("Timer not running!");
+            }
             stopWatch.Stop();
             return stopWatch.ElapsedTicks;
         }
